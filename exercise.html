@@ -33,7 +33,7 @@
                     <i class="fa-solid fa-gamepad text-emerald-400"></i>
                     Luyện Nghe & Nhận Biết Âm IPA
                 </h1>
-                <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Lắng nghe âm thanh và chọn đúng ký hiệu phiên âm IPA tương ứng</p>
+                <p class="text-indigo-200 text-xs sm:text-sm mt-0.5">Thử thách phân loại và nhận diện 44 âm phiên âm quốc tế</p>
             </div>
             <a href="ipa.html" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white shadow transition flex items-center gap-2">
                 <i class="fa-solid fa-table-list"></i> Tra Cứu Bảng IPA
@@ -48,54 +48,90 @@
         <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm mb-6 flex flex-col gap-4">
             
             <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 text-xs sm:text-sm">
-                <!-- Quiz Mode Switcher -->
+                <!-- Quiz Task Type Switcher -->
                 <div class="flex items-center gap-2">
+                    <span class="font-semibold text-slate-700 whitespace-nowrap">
+                        <i class="fa-solid fa-graduation-cap text-indigo-500 mr-1"></i> Dạng bài:
+                    </span>
+                    <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200 text-xs font-semibold">
+                        <button id="btnTaskListen" onclick="setQuizType('listen_symbol')" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
+                            🔊 Nghe ➔ Đoán Âm IPA
+                        </button>
+                        <button id="btnTaskCategory" onclick="setQuizType('visual_category')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                            👁️ Nhìn Âm ➔ Đoán Loại
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interface Mode Switcher (For Listen mode) -->
+                <div id="interfaceModeContainer" class="flex items-center gap-2">
                     <span class="font-semibold text-slate-700 whitespace-nowrap">
                         <i class="fa-solid fa-layer-group text-indigo-500 mr-1"></i> Giao diện:
                     </span>
                     <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200 text-xs font-semibold">
-                        <button id="btnMode4Choices" onclick="setQuizMode('4choices')" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
+                        <button id="btnMode4Choices" onclick="setQuizMode('4choices')" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
                             🎯 4 Đáp án
                         </button>
-                        <button id="btnModeAll44" onclick="setQuizMode('all44')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <button id="btnModeAll44" onclick="setQuizMode('all44')" class="px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
                             🧩 Bàn Phím IPA
                         </button>
                     </div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-3">
-                    <!-- Question Count Selector -->
-                    <div class="flex items-center gap-1.5">
-                        <label for="questionCountSelect" class="font-semibold text-slate-700 whitespace-nowrap">
-                            <i class="fa-solid fa-list-ol text-indigo-500 mr-1"></i> Số câu:
-                        </label>
-                        <select id="questionCountSelect" onchange="restartQuiz()" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="10">🎯 10 Câu (Luyện nhanh 2 phút)</option>
-                            <option value="20">⚡ 20 Câu (Thử thách)</option>
-                            <option value="44">🏆 Trọn Bộ 44 Âm (Full Test - Không lặp)</option>
-                        </select>
-                    </div>
-
-                    <!-- Category Filter -->
-                    <div class="flex items-center gap-1.5">
-                        <label for="categoryFilter" class="font-semibold text-slate-700 whitespace-nowrap">
-                            <i class="fa-solid fa-filter text-indigo-500 mr-1"></i> Bộ Âm:
-                        </label>
-                        <select id="categoryFilter" onchange="restartQuiz()" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="all">Tất cả 44 âm vị IPA</option>
-                            <option value="Nguyên âm ngắn">7 Nguyên âm ngắn</option>
-                            <option value="Nguyên âm dài">5 Nguyên âm dài</option>
-                            <option value="Nguyên âm đôi">8 Nguyên âm đôi</option>
-                            <option value="Phụ âm vô thanh">9 Phụ âm vô thanh</option>
-                            <option value="Phụ âm hữu thanh">15 Phụ âm hữu thanh</option>
-                        </select>
-                    </div>
-                </div>
             </div>
 
-            <!-- Reset button row -->
-            <div class="pt-3 border-t border-slate-100 flex items-center justify-end text-xs">
-                <button onclick="restartQuiz()" title="Tải lại bộ câu hỏi mới" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition flex items-center gap-1.5 active:scale-95">
+            <!-- Second Row: Question Count & Category Filter -->
+            <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs sm:text-sm">
+                <div class="flex flex-wrap items-center gap-3">
+
+
+                    <!-- Multi-select Category Filter Container (OR condition) -->
+                    <div id="categoryFilterContainer" class="relative">
+                        <button id="categoryDropdownBtn" onclick="toggleCategoryDropdown(event)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-1.5 active:scale-95 transition">
+                            <i class="fa-solid fa-filter text-indigo-500"></i>
+                            <span id="selectedCategoriesLabel">Bộ Âm: Tất cả (44)</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+                        </button>
+
+                        <!-- Multi-select Dropdown Popover -->
+                        <div id="categoryDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 p-3.5 flex flex-col gap-2">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-100 text-xs font-bold text-slate-700">
+                                <span>Chọn bộ âm (Điều kiện OR):</span>
+                                <button onclick="selectAllCategories(true)" class="text-[11px] text-indigo-600 hover:underline font-semibold">Tất cả</button>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5 text-xs">
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Nguyên âm ngắn" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700">Nguyên âm ngắn (7)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Nguyên âm dài" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700">Nguyên âm dài (5)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Nguyên âm đôi" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700">Nguyên âm đôi (8)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Phụ âm vô thanh" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700">Phụ âm vô thanh (9)</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Phụ âm hữu thanh" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700">Phụ âm hữu thanh (15)</span>
+                                </label>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px]">
+                                <button onclick="selectAllCategories(false)" class="text-slate-500 hover:text-slate-700 hover:underline">Bỏ chọn hết</button>
+                                <button onclick="applyCategorySelection()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition shadow-sm">Áp dụng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <button onclick="restartQuiz()" title="Tải lại bộ câu hỏi mới" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition flex items-center justify-center gap-1.5 active:scale-95">
                     <i class="fa-solid fa-rotate text-indigo-500"></i> Đổi bộ câu hỏi mới
                 </button>
             </div>
@@ -121,25 +157,18 @@
                 </span>
             </div>
 
-            <!-- Central Audio Play Card -->
-            <div class="text-center py-6 px-4 bg-indigo-50/60 rounded-2xl border border-indigo-100 mb-6">
-                <p class="text-xs text-indigo-700 font-medium mb-3">Bấm nút bên dưới để nghe câu hỏi âm IPA</p>
-                
-                <button id="btnPlayAudio" onclick="playTargetAudio()" class="pulse-audio px-7 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base sm:text-lg shadow-md transition transform active:scale-95 inline-flex items-center gap-3">
-                    <i class="fa-solid fa-volume-high text-xl"></i>
-                    <span>NGHE ÂM IPA</span>
-                </button>
-
-                <p class="text-[11px] text-slate-400 mt-3">(Có thể bấm nút hoặc dùng phím Spacebar để nghe lại)</p>
+            <!-- Question Target Display (Audio Card or Visual Symbol Card) -->
+            <div id="targetCardContainer" class="text-center py-6 px-4 bg-indigo-50/60 rounded-2xl border border-indigo-100 mb-6">
+                <!-- Dynamic Content (Play Audio Button or Visual Symbol) -->
             </div>
 
             <!-- Options Section Header -->
             <p id="choicesHintText" class="text-xs font-semibold text-slate-600 mb-3 flex items-center justify-between">
-                <span>Chọn 1 âm IPA đúng bên dưới:</span>
-                <span id="modeNoticeBadge" class="text-[11px] font-normal text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">🎯 Trắc nghiệm 4 đáp án</span>
+                <span id="hintTitleText">Chọn 1 âm IPA đúng bên dưới:</span>
+                <span id="modeNoticeBadge" class="text-[11px] font-normal text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">🔊 Nghe âm ➔ Đoán âm IPA</span>
             </p>
 
-            <!-- Options Container (Dynamic: 4 Choices or Full 44 IPA Grid) -->
+            <!-- Options Container (Dynamic: 4 Choices, 44 IPA Grid, or 5 Category Choices) -->
             <div id="optionsGrid" class="grid gap-2.5 sm:gap-3.5 mb-6">
                 <!-- Dynamic choice buttons -->
             </div>
@@ -160,6 +189,7 @@
             <div id="actionArea" class="hidden text-center">
                 <button onclick="nextQuestion()" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition transform active:scale-95 inline-flex items-center justify-center gap-2">
                     <span>Câu tiếp theo</span>
+                    <span class="text-[11px] font-normal text-indigo-200 bg-indigo-800/50 px-2 py-0.5 rounded-lg border border-indigo-500/40">Enter ↵ / ➔ / Space</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
@@ -200,7 +230,7 @@
 
     <!-- Footer -->
     <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs">
-        <p>Hệ thống bài tập luyện nghe 44 âm chuẩn phiên âm quốc tế IPA tiếng Anh</p>
+        <p>Hệ thống bài tập luyện nghe & phân loại 44 âm chuẩn phiên âm quốc tế IPA tiếng Anh</p>
     </footer>
 
     <!-- Load Dataset JS -->
@@ -208,6 +238,7 @@
 
     <!-- Quiz Engine Script -->
     <script>
+        let quizType = 'listen_symbol'; // 'listen_symbol' or 'visual_category'
         let quizMode = '4choices'; // '4choices' or 'all44'
         let currentQuestionIndex = 0;
         let currentScore = 0;
@@ -216,6 +247,14 @@
         let currentTargetItem = null;
         let answered = false;
         let currentAudio = null;
+
+        const CATEGORY_LIST = [
+            { name: "Nguyên âm ngắn", badge: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+            { name: "Nguyên âm dài", badge: "bg-blue-100 text-blue-800 border-blue-300" },
+            { name: "Nguyên âm đôi", badge: "bg-purple-100 text-purple-800 border-purple-300" },
+            { name: "Phụ âm vô thanh", badge: "bg-amber-100 text-amber-800 border-amber-300" },
+            { name: "Phụ âm hữu thanh", badge: "bg-rose-100 text-rose-800 border-rose-300" }
+        ];
 
         // Shuffle Array helper
         function shuffle(array) {
@@ -227,21 +266,104 @@
             return arr;
         }
 
+        // Multi-select Category Dropdown Handlers (OR Condition)
+        function toggleCategoryDropdown(event) {
+            if (event) event.stopPropagation();
+            const menu = document.getElementById('categoryDropdownMenu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById('categoryFilterContainer');
+            const menu = document.getElementById('categoryDropdownMenu');
+            if (dropdown && menu && !dropdown.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function getSelectedCategories() {
+            const checkboxes = document.querySelectorAll('.cat-checkbox:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function selectAllCategories(check) {
+            const checkboxes = document.querySelectorAll('.cat-checkbox');
+            checkboxes.forEach(cb => cb.checked = check);
+            onCategoryCheckboxChange();
+        }
+
+        function onCategoryCheckboxChange() {
+            const selected = getSelectedCategories();
+            const label = document.getElementById('selectedCategoriesLabel');
+            if (!label) return;
+
+            if (selected.length === 0 || selected.length === 5) {
+                label.textContent = "Bộ Âm: Tất cả (44)";
+            } else if (selected.length === 1) {
+                label.textContent = `Bộ Âm: ${selected[0]}`;
+            } else {
+                label.textContent = `Bộ Âm: ${selected.length} nhóm được chọn`;
+            }
+        }
+
+        function applyCategorySelection() {
+            const selected = getSelectedCategories();
+            if (quizType === 'visual_category' && selected.length === 1) {
+                alert('Ở dạng bài Nhìn âm ➔ Đoán loại, bạn cần chọn ít nhất 2 nhóm âm trở lên để bài trắc nghiệm phân loại có ý nghĩa!');
+                return;
+            }
+            const menu = document.getElementById('categoryDropdownMenu');
+            if (menu) menu.classList.add('hidden');
+            restartQuiz();
+        }
+
+        function getFilteredPool() {
+            const selected = getSelectedCategories();
+            if (selected.length === 0 || selected.length === 5) {
+                return ipaData;
+            }
+            // Multi-select OR condition filter
+            return ipaData.filter(item => selected.includes(item.type2));
+        }
+
+        // Set Quiz Task Type ('listen_symbol' vs 'visual_category')
+        function setQuizType(type) {
+            quizType = type;
+            const btnListen = document.getElementById('btnTaskListen');
+            const btnCategory = document.getElementById('btnTaskCategory');
+            const interfaceContainer = document.getElementById('interfaceModeContainer');
+            const categoryFilterContainer = document.getElementById('categoryFilterContainer');
+
+            if (type === 'listen_symbol') {
+                btnListen.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
+                btnCategory.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+                interfaceContainer.classList.remove('hidden');
+            } else {
+                btnCategory.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
+                btnListen.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+                interfaceContainer.classList.add('hidden');
+
+                // If currently only 1 category selected in visual_category, select all by default
+                const selected = getSelectedCategories();
+                if (selected.length === 1) {
+                    selectAllCategories(true);
+                }
+            }
+            restartQuiz();
+        }
+
         // Set Quiz Mode ('4choices' vs 'all44')
         function setQuizMode(mode) {
             quizMode = mode;
             const btn4 = document.getElementById('btnMode4Choices');
             const btnAll = document.getElementById('btnModeAll44');
-            const notice = document.getElementById('modeNoticeBadge');
 
             if (mode === '4choices') {
-                btn4.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
-                btnAll.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
-                notice.textContent = '🎯 Trắc nghiệm 4 đáp án';
+                btn4.className = 'px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
+                btnAll.className = 'px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
             } else {
-                btnAll.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
-                btn4.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
-                notice.textContent = '🧩 Bảng Bàn Phím IPA (Toàn Cảnh)';
+                btnAll.className = 'px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
+                btn4.className = 'px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
             }
             restartQuiz();
         }
@@ -249,24 +371,17 @@
         // Initialize / Restart Quiz
         function restartQuiz() {
             document.getElementById('summaryModal').classList.add('hidden');
-            const category = document.getElementById('categoryFilter').value;
-            const countVal = parseInt(document.getElementById('questionCountSelect').value || '10');
-            
-            let filteredData = ipaData;
-            if (category !== 'all') {
-                filteredData = ipaData.filter(item => item.type2 === category);
+
+            let filteredData = getFilteredPool();
+
+            if (filteredData.length < 4 && quizMode === '4choices' && quizType === 'listen_symbol') {
+                alert('Bộ âm được chọn có ít hơn 4 âm, không đủ tạo 4 đáp án trắc nghiệm. Đang chuyển sang chọn Tất cả âm.');
+                selectAllCategories(true);
+                filteredData = getFilteredPool();
             }
 
-            if (filteredData.length < 4 && quizMode === '4choices') {
-                alert('Bộ âm được chọn không đủ 4 âm để làm trắc nghiệm. Đang chuyển về Tất cả âm.');
-                document.getElementById('categoryFilter').value = 'all';
-                filteredData = ipaData;
-            }
-
-            // Shuffle pool and select target count (Guaranteed unique questions per round!)
-            const shuffledPool = shuffle(filteredData);
-            const targetCount = Math.min(countVal, shuffledPool.length);
-            questionsList = shuffledPool.slice(0, targetCount);
+            // Shuffle pool and use 100% of the pool (no repetition, matches selected filter!)
+            questionsList = shuffle(filteredData);
 
             currentQuestionIndex = 0;
             currentScore = 0;
@@ -288,56 +403,105 @@
             document.getElementById('questionProgressText').textContent = `Câu ${index + 1} / ${questionsList.length}`;
             document.getElementById('progressBar').style.width = `${((index + 1) / questionsList.length) * 100}%`;
 
+            const targetContainer = document.getElementById('targetCardContainer');
+            const hintTitle = document.getElementById('hintTitleText');
+            const noticeBadge = document.getElementById('modeNoticeBadge');
             const optionsGrid = document.getElementById('optionsGrid');
             optionsGrid.innerHTML = '';
 
-            const category = document.getElementById('categoryFilter').value;
-            let currentPool = ipaData;
-            if (category !== 'all') {
-                currentPool = ipaData.filter(item => item.type2 === category);
-            }
+            if (quizType === 'listen_symbol') {
+                // Dạng 1: Nghe âm -> Đoán IPA
+                targetContainer.innerHTML = `
+                    <p class="text-xs text-indigo-700 font-medium mb-3">Bấm nút bên dưới để nghe câu hỏi âm IPA</p>
+                    <button id="btnPlayAudio" onclick="playTargetAudio()" class="pulse-audio px-7 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base sm:text-lg shadow-md transition transform active:scale-95 inline-flex items-center gap-3">
+                        <i class="fa-solid fa-volume-high text-xl"></i>
+                        <span>NGHE ÂM IPA</span>
+                    </button>
+                    <p class="text-[11px] text-slate-400 mt-3">(Có thể bấm nút hoặc dùng phím Spacebar để nghe lại)</p>
+                `;
+                hintTitle.textContent = "Chọn 1 ký hiệu âm IPA đúng bên dưới:";
+                noticeBadge.textContent = quizMode === '4choices' ? "🎯 Trắc nghiệm 4 đáp án" : "🧩 Bàn Phím IPA (Toàn Cảnh)";
 
-            if (quizMode === '4choices') {
-                // Mode 1: 4 choices (1 correct + 3 distractors)
-                optionsGrid.className = 'grid grid-cols-2 gap-3 sm:gap-4 mb-5';
+                let currentPool = getFilteredPool();
 
-                let distractors = currentPool.filter(item => item.id !== currentTargetItem.id);
-                distractors = shuffle(distractors).slice(0, 3);
-                const choices = shuffle([currentTargetItem, ...distractors]);
+                if (quizMode === '4choices') {
+                    optionsGrid.className = 'grid grid-cols-2 gap-3 sm:gap-4 mb-5';
+                    let distractors = currentPool.filter(item => item.id !== currentTargetItem.id);
+                    distractors = shuffle(distractors).slice(0, 3);
+                    const choices = shuffle([currentTargetItem, ...distractors]);
 
-                choices.forEach((choice) => {
+                    choices.forEach((choice) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'choice-btn bg-white hover:bg-indigo-50/70 border-2 border-slate-200 text-slate-800 font-mono font-bold text-2xl sm:text-3xl py-4 rounded-2xl shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-1';
+                        btn.setAttribute('data-id', choice.id);
+                        btn.onclick = () => checkAnswerSymbol(choice, btn);
+                        btn.innerHTML = `
+                            <span>${choice.ipa}</span>
+                            <span class="text-[11px] font-sans font-normal text-slate-400">${choice.type2}</span>
+                        `;
+                        optionsGrid.appendChild(btn);
+                    });
+                } else {
+                    optionsGrid.className = 'grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-5';
+                    currentPool.forEach((choice) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'choice-btn bg-white hover:bg-indigo-600 hover:text-white border-2 border-slate-200 text-indigo-700 font-mono font-bold text-xl sm:text-2xl py-3 rounded-xl shadow-sm transition transform active:scale-95 flex items-center justify-center';
+                        btn.setAttribute('data-id', choice.id);
+                        btn.setAttribute('title', `${choice.ipa} (${choice.type2})`);
+                        btn.onclick = () => checkAnswerSymbol(choice, btn);
+                        btn.innerHTML = `<span>${choice.ipa}</span>`;
+                        optionsGrid.appendChild(btn);
+                    });
+                }
+
+                // Auto play target audio
+                setTimeout(() => playTargetAudio(), 300);
+
+            } else {
+                // Dạng 2: Nhìn IPA -> Đoán Phân Loại (Category)
+                targetContainer.innerHTML = `
+                    <p class="text-xs text-indigo-700 font-medium mb-2">Cho ký hiệu âm vị IPA bên dưới:</p>
+                    <div class="inline-block bg-white text-indigo-700 border border-indigo-200 font-mono font-bold text-4xl sm:text-5xl px-7 py-3 rounded-2xl shadow-sm mb-3">
+                        ${currentTargetItem.ipa}
+                    </div>
+                    <div>
+                        <button onclick="playTargetAudio()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs transition flex items-center gap-1.5 mx-auto shadow-sm active:scale-95">
+                            <i class="fa-solid fa-volume-high"></i> Nghe thử âm thanh mẫu
+                        </button>
+                    </div>
+                `;
+                hintTitle.textContent = "Ký hiệu âm trên thuộc loại phân loại nào bên dưới?";
+                noticeBadge.textContent = "👁️ Nhìn IPA ➔ Đoán loại âm";
+
+                const activeCatNames = getSelectedCategories();
+                let activeCategoryList = CATEGORY_LIST;
+                if (activeCatNames.length > 0 && activeCatNames.length < 5) {
+                    activeCategoryList = CATEGORY_LIST.filter(cat => activeCatNames.includes(cat.name));
+                }
+
+                if (activeCategoryList.length === 2) {
+                    optionsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-5';
+                } else if (activeCategoryList.length === 3) {
+                    optionsGrid.className = 'grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5';
+                } else {
+                    optionsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5';
+                }
+
+                activeCategoryList.forEach((cat) => {
                     const btn = document.createElement('button');
-                    btn.className = 'choice-btn bg-white hover:bg-indigo-50/70 border-2 border-slate-200 text-slate-800 font-mono font-bold text-2xl sm:text-3xl py-4 rounded-2xl shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-1';
-                    btn.setAttribute('data-id', choice.id);
-                    btn.onclick = () => checkAnswer(choice, btn);
+                    btn.className = `category-choice-btn bg-white hover:bg-indigo-50/80 border-2 border-slate-200 text-slate-800 font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-sm transition transform active:scale-95 flex items-center justify-between`;
+                    btn.setAttribute('data-cat', cat.name);
+                    btn.onclick = () => checkAnswerCategory(cat.name, btn);
                     btn.innerHTML = `
-                        <span>${choice.ipa}</span>
-                        <span class="text-[11px] font-sans font-normal text-slate-400">${choice.type2}</span>
+                        <span>${cat.name}</span>
+                        <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
                     `;
                     optionsGrid.appendChild(btn);
                 });
-            } else {
-                // Mode 2: Full IPA Keyboard Grid (Display all symbols in target pool)
-                optionsGrid.className = 'grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-5';
-
-                currentPool.forEach((choice) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'choice-btn bg-white hover:bg-indigo-600 hover:text-white border-2 border-slate-200 text-indigo-700 font-mono font-bold text-xl sm:text-2xl py-3 rounded-xl shadow-sm transition transform active:scale-95 flex items-center justify-center';
-                    btn.setAttribute('data-id', choice.id);
-                    btn.setAttribute('title', `${choice.ipa} (${choice.type2})`);
-                    btn.onclick = () => checkAnswer(choice, btn);
-                    btn.innerHTML = `<span>${choice.ipa}</span>`;
-                    optionsGrid.appendChild(btn);
-                });
             }
-
-            // Automatically play target audio on load
-            setTimeout(() => {
-                playTargetAudio();
-            }, 300);
         }
 
-        // Play Target Audio with 2-tier fallback (Local MP3 -> Remote MP3)
+        // Play Target Audio with 2-tier fallback
         function playTargetAudio() {
             if (!currentTargetItem) return;
             if (currentAudio) {
@@ -351,21 +515,20 @@
                 if (currentTargetItem.remoteAudioUrl) {
                     currentAudio = new Audio(currentTargetItem.remoteAudioUrl);
                     currentAudio.play().catch(err2 => {
-                        alert('Không thể phát âm thanh mẫu này.');
+                        console.warn('Không thể phát audio mẫu.');
                     });
                 }
             });
         }
 
-        // Check Answer Choice
-        function checkAnswer(selectedChoice, btnEl) {
+        // Check Answer for Dạng 1 (Nghe -> Đoán Ký Hiệu IPA)
+        function checkAnswerSymbol(selectedChoice, btnEl) {
             if (answered) return;
             answered = true;
 
             const allButtons = document.querySelectorAll('.choice-btn');
 
             if (selectedChoice.id === currentTargetItem.id) {
-                // Correct Choice
                 currentScore++;
                 streak++;
                 btnEl.className = quizMode === '4choices' 
@@ -384,7 +547,6 @@
                     btnEl.innerHTML = `<span>${selectedChoice.ipa} ✓</span>`;
                 }
             } else {
-                // Incorrect Choice
                 streak = 0;
                 btnEl.className = quizMode === '4choices'
                     ? 'choice-btn bg-rose-500 border-2 border-rose-600 text-white font-mono font-bold text-2xl sm:text-3xl py-4 rounded-2xl shadow-md animate-shake flex flex-col items-center justify-center gap-1'
@@ -402,7 +564,6 @@
                     btnEl.innerHTML = `<span>${selectedChoice.ipa} ✕</span>`;
                 }
 
-                // Highlight Correct Answer Button
                 allButtons.forEach(b => {
                     if (parseInt(b.getAttribute('data-id')) === currentTargetItem.id) {
                         b.className = quizMode === '4choices'
@@ -415,10 +576,52 @@
                 });
             }
 
-            // Disable all buttons
             allButtons.forEach(b => b.onclick = null);
+            finishQuestionTurn();
+        }
 
-            // Update Stats UI & High Score
+        // Check Answer for Dạng 2 (Nhìn IPA -> Đoán Phân Loại Category)
+        function checkAnswerCategory(selectedCatName, btnEl) {
+            if (answered) return;
+            answered = true;
+
+            const allButtons = document.querySelectorAll('.category-choice-btn');
+
+            if (selectedCatName === currentTargetItem.type2) {
+                currentScore++;
+                streak++;
+                btnEl.className = 'category-choice-btn bg-emerald-500 border-2 border-emerald-600 text-white font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-between';
+                btnEl.innerHTML = `
+                    <span>${selectedCatName}</span>
+                    <i class="fa-solid fa-circle-check text-lg text-emerald-100"></i>
+                `;
+            } else {
+                streak = 0;
+                btnEl.className = 'category-choice-btn bg-rose-500 border-2 border-rose-600 text-white font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-md animate-shake flex items-center justify-between';
+                btnEl.innerHTML = `
+                    <span>${selectedCatName}</span>
+                    <i class="fa-solid fa-circle-xmark text-lg text-rose-100"></i>
+                `;
+
+                // Highlight correct category
+                allButtons.forEach(b => {
+                    if (b.getAttribute('data-cat') === currentTargetItem.type2) {
+                        b.className = 'category-choice-btn bg-emerald-100 border-2 border-emerald-500 text-emerald-800 font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl flex items-center justify-between';
+                        b.innerHTML = `
+                            <span>${currentTargetItem.type2}</span>
+                            <i class="fa-solid fa-check text-emerald-600 font-bold"></i>
+                        `;
+                    }
+                });
+            }
+
+            allButtons.forEach(b => b.onclick = null);
+            // Play sound sample automatically to reinforce learning
+            playTargetAudio();
+            finishQuestionTurn();
+        }
+
+        function finishQuestionTurn() {
             updateStatsUI();
 
             // Reveal Explanation Box
@@ -464,11 +667,37 @@
             document.getElementById('summaryModal').classList.remove('hidden');
         }
 
-        // Keyboard Shortcut: Spacebar plays audio
+        // Keyboard Shortcuts Handler: Fast navigation & controls
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
+            // Ignore shortcut triggers if user is typing inside input/select elements
+            if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            // 1. Enter, ArrowRight, or Spacebar -> Move to NEXT question if already answered
+            if (['Enter', 'ArrowRight', 'Space'].includes(e.code)) {
+                if (answered) {
+                    e.preventDefault();
+                    nextQuestion();
+                    return;
+                }
+            }
+
+            // 2. Spacebar -> Re-play audio if not answered yet
+            if (e.code === 'Space' && !answered) {
                 e.preventDefault();
                 playTargetAudio();
+                return;
+            }
+
+            // 3. Number keys 1, 2, 3, 4 -> Pick choices 1 to 4 in 4-choices mode
+            if (!answered && quizType === 'listen_symbol' && quizMode === '4choices') {
+                const numKey = parseInt(e.key);
+                if (numKey >= 1 && numKey <= 4) {
+                    const choiceBtns = document.querySelectorAll('.choice-btn');
+                    if (choiceBtns[numKey - 1]) {
+                        e.preventDefault();
+                        choiceBtns[numKey - 1].click();
+                    }
+                }
             }
         });
 
