@@ -12,13 +12,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Lexend', sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { height: 8px; width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
@@ -56,10 +50,10 @@
                 </div>
 
                 <div class="flex items-center gap-2 bg-indigo-800/80 dark:bg-slate-900/80 p-1.5 rounded-xl border border-indigo-500/30 dark:border-slate-700">
-                    <button id="btn-view-table" onclick="setViewMode('table')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition bg-white text-indigo-700 shadow">
+                    <button id="btnTableView" onclick="setView('table')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition bg-white text-indigo-700 shadow">
                         <i class="fa-solid fa-table-list mr-1.5"></i> Bảng 6 Cột
                     </button>
-                    <button id="btn-view-grid" onclick="setViewMode('grid')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition text-indigo-200 hover:text-white">
+                    <button id="btnGridView" onclick="setView('grid')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition text-indigo-200 dark:text-slate-400 hover:text-white">
                         <i class="fa-solid fa-border-all mr-1.5"></i> Thẻ Lưới
                     </button>
                     <a href="exercise.html" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition bg-emerald-500 hover:bg-emerald-600 text-white shadow flex items-center gap-1.5">
@@ -80,28 +74,28 @@
                 <!-- Search Input -->
                 <div class="relative flex-1 max-w-md">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="searchInput" oninput="filterData()" placeholder="Tìm theo âm (ví dụ: /i:/, /p/), ví dụ hoặc cách đọc..." 
+                    <input type="text" id="searchInput" placeholder="Tìm theo âm (ví dụ: /i:/, /p/), ví dụ hoặc cách đọc..." 
                            class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
                 </div>
 
                 <!-- Category Badges / Filter Buttons -->
-                <div class="flex flex-wrap gap-2 text-xs sm:text-sm font-medium">
-                    <button onclick="setFilter('all')" class="filter-btn active px-3.5 py-2 rounded-xl bg-indigo-600 text-white font-medium shadow-sm transition" data-filter="all">
+                <div id="filterButtonsContainer" class="flex flex-wrap gap-2 text-xs sm:text-sm font-medium">
+                    <button onclick="setFilter('all')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-indigo-600 text-white shadow-md active:scale-95" data-filter="all">
                         Tất Cả (44)
                     </button>
-                    <button onclick="setFilter('Nguyên âm ngắn')" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition" data-filter="Nguyên âm ngắn">
+                    <button onclick="setFilter('Nguyên âm ngắn')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 active:scale-95" data-filter="Nguyên âm ngắn">
                         7 Nguyên Âm Ngắn
                     </button>
-                    <button onclick="setFilter('Nguyên âm dài')" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition" data-filter="Nguyên âm dài">
+                    <button onclick="setFilter('Nguyên âm dài')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 active:scale-95" data-filter="Nguyên âm dài">
                         5 Nguyên Âm Dài
                     </button>
-                    <button onclick="setFilter('Nguyên âm đôi')" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition" data-filter="Nguyên âm đôi">
+                    <button onclick="setFilter('Nguyên âm đôi')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 active:scale-95" data-filter="Nguyên âm đôi">
                         8 Nguyên Âm Đôi
                     </button>
-                    <button onclick="setFilter('Phụ âm vô thanh')" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition" data-filter="Phụ âm vô thanh">
+                    <button onclick="setFilter('Phụ âm vô thanh')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 active:scale-95" data-filter="Phụ âm vô thanh">
                         9 Phụ Âm Vô Thanh
                     </button>
-                    <button onclick="setFilter('Phụ âm hữu thanh')" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition" data-filter="Phụ âm hữu thanh">
+                    <button onclick="setFilter('Phụ âm hữu thanh')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 active:scale-95" data-filter="Phụ âm hữu thanh">
                         15 Phụ Âm Hữu Thanh
                     </button>
                 </div>
@@ -113,7 +107,7 @@
                 <!-- Select Voice -->
                 <div class="flex items-center gap-2 flex-1 max-w-md">
                     <label for="voiceSelect" class="font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
-                        <i class="fa-solid fa-microphone text-indigo-500 mr-1"></i> Giọng đọc máy:
+                        <i class="fa-solid fa-microphone text-indigo-500 mr-1"></i> Giọng đọc máy ví dụ (TTS):
                     </label>
                     <select id="voiceSelect" onchange="saveSpeechSettings()" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full truncate">
                         <option value="default">Mặc định hệ thống</option>
@@ -149,7 +143,7 @@
                     <thead>
                         <tr class="bg-slate-100/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs uppercase tracking-wider">
                             <th class="p-4 w-12 text-center">STT</th>
-                            <th class="p-4 w-28">1. Ký Hiệu IPA</th>
+                            <th class="p-4 w-36">1. Ký Hiệu IPA</th>
                             <th class="p-4 w-44">2. Loại Âm Chi Tiết</th>
                             <th class="p-4 min-w-[280px]">3. Hướng Dẫn Cách Đọc Khẩu Hình</th>
                             <th class="p-4 min-w-[220px]">4. Ví Dụ Từ & Phiên Âm</th>
@@ -178,369 +172,10 @@
         </div>
     </footer>
 
-    <!-- Load Dataset JS -->
+    <!-- Modular External Scripts -->
     <script src="js/ipa-data.js"></script>
-
-    <!-- Application Script -->
-    <script>
-        // --- Theme Management System ---
-        function initTheme() {
-            const savedTheme = localStorage.getItem('ipa_theme') || 'system';
-            applyTheme(savedTheme);
-        }
-
-        function applyTheme(theme) {
-            localStorage.setItem('ipa_theme', theme);
-            const isDarkSystem = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const shouldBeDark = theme === 'dark' || (theme === 'system' && isDarkSystem);
-
-            if (shouldBeDark) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-
-            const icon = document.getElementById('themeBtnIcon');
-            const label = document.getElementById('themeBtnLabel');
-            if (icon && label) {
-                if (theme === 'light') {
-                    icon.className = 'fa-solid fa-sun text-amber-300';
-                    label.textContent = 'Sáng';
-                } else if (theme === 'dark') {
-                    icon.className = 'fa-solid fa-moon text-indigo-300';
-                    label.textContent = 'Tối';
-                } else {
-                    icon.className = 'fa-solid fa-desktop text-emerald-300';
-                    label.textContent = 'Tự động';
-                }
-            }
-        }
-
-        function setTheme(theme) {
-            applyTheme(theme);
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) menu.classList.add('hidden');
-        }
-
-        function toggleThemeDropdown(event) {
-            if (event) event.stopPropagation();
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) menu.classList.toggle('hidden');
-        }
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-            if (localStorage.getItem('ipa_theme') === 'system') {
-                applyTheme('system');
-            }
-        });
-
-        document.addEventListener('click', (event) => {
-            const themeDropdown = document.getElementById('themeDropdownBtn');
-            const themeMenu = document.getElementById('themeDropdownMenu');
-            if (themeDropdown && themeMenu && !themeDropdown.parentElement.contains(event.target)) {
-                themeMenu.classList.add('hidden');
-            }
-        });
-
-        // Initialize theme immediately
-        initTheme();
-
-        // --- View & Filter State ---
-        let currentViewMode = 'table';
-        let currentFilter = 'all';
-
-        function setViewMode(mode) {
-            currentViewMode = mode;
-            const btnTable = document.getElementById('btn-view-table');
-            const btnGrid = document.getElementById('btn-view-grid');
-            const tableView = document.getElementById('tableView');
-            const gridView = document.getElementById('gridView');
-
-            if (mode === 'table') {
-                btnTable.className = 'px-3.5 py-2 rounded-lg text-sm font-semibold transition bg-white text-indigo-700 shadow';
-                btnGrid.className = 'px-3.5 py-2 rounded-lg text-sm font-semibold transition text-indigo-200 hover:text-white';
-                tableView.classList.remove('hidden');
-                gridView.classList.add('hidden');
-            } else {
-                btnGrid.className = 'px-3.5 py-2 rounded-lg text-sm font-semibold transition bg-white text-indigo-700 shadow';
-                btnTable.className = 'px-3.5 py-2 rounded-lg text-sm font-semibold transition text-indigo-200 hover:text-white';
-                gridView.classList.remove('hidden');
-                tableView.classList.add('hidden');
-            }
-        }
-
-        function setFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (btn.getAttribute('data-filter') === filter) {
-                    btn.className = 'filter-btn active px-3.5 py-2 rounded-xl bg-indigo-600 text-white font-medium shadow-sm transition';
-                } else {
-                    btn.className = 'filter-btn px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition';
-                }
-            });
-            filterData();
-        }
-
-        function getFilteredData() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            return ipaData.filter(item => {
-                const matchesFilter = currentFilter === 'all' || item.type2 === currentFilter;
-                const matchesSearch = item.ipa.toLowerCase().includes(searchTerm) ||
-                                     item.guide.toLowerCase().includes(searchTerm) ||
-                                     item.examples.toLowerCase().includes(searchTerm) ||
-                                     item.type2.toLowerCase().includes(searchTerm);
-                return matchesFilter && matchesSearch;
-            });
-        }
-
-        function filterData() {
-            const filtered = getFilteredData();
-            renderTable(filtered);
-            renderGrid(filtered);
-        }
-
-        function renderTable(data) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 dark:text-slate-500 font-medium">Không tìm thấy âm phiên âm phù hợp</td></tr>`;
-                return;
-            }
-
-            data.forEach((item, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-indigo-50/50 dark:hover:bg-slate-800/80 transition border-b border-slate-100 dark:border-slate-700/60';
-                
-                let badgeClass = 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
-                if (item.type2.includes('ngắn')) badgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800';
-                else if (item.type2.includes('dài')) badgeClass = 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800';
-                else if (item.type2.includes('đôi')) badgeClass = 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 dark:border-purple-800';
-                else if (item.type2.includes('vô thanh')) badgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800';
-                else if (item.type2.includes('hữu thanh')) badgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-200 dark:border-rose-800';
-
-                tr.innerHTML = `
-                    <td class="p-4 text-center font-bold text-slate-400 dark:text-slate-500 text-xs">${index + 1}</td>
-                    <td class="p-4 font-bold text-indigo-700 dark:text-indigo-400 font-mono text-xl sm:text-2xl">${item.ipa}</td>
-                    <td class="p-4 align-top">
-                        <span class="inline-block px-2.5 py-1 rounded-lg text-xs font-semibold ${badgeClass}">
-                            ${item.type2}
-                        </span>
-                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">${item.type1}</div>
-                    </td>
-                    <td class="p-4 align-top text-slate-700 dark:text-slate-300 leading-relaxed">${item.guide}</td>
-                    <td class="p-4 align-top font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
-                        <div>${item.examples}</div>
-                        <button onclick="speakExample('${item.audioQuery}')" title="Nghe đọc ví dụ giọng tự động" class="mt-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-indigo-50 dark:hover:bg-slate-600 text-indigo-600 dark:text-indigo-300 text-xs font-semibold transition flex items-center gap-1 border border-slate-200 dark:border-slate-600">
-                            <i class="fa-solid fa-volume-low"></i> Nghe từ ví dụ
-                        </button>
-                    </td>
-                    <td class="p-4 align-top text-center">
-                        <div class="flex flex-col items-center justify-center">
-                            <button onclick="playIpaAudio('${item.audioUrl}', '${item.remoteAudioUrl}')" title="Nghe âm IPA mẫu (File MP3)" class="w-10 h-10 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center text-sm shadow-md transition transform active:scale-95">
-                                <i class="fa-solid fa-volume-high"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderGrid(data) {
-            const grid = document.getElementById('gridView');
-            grid.innerHTML = '';
-
-            if (data.length === 0) {
-                grid.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 dark:text-slate-500 font-medium">Không tìm thấy âm phiên âm phù hợp</div>`;
-                return;
-            }
-
-            data.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = 'bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition flex flex-col justify-between';
-
-                let badgeClass = 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
-                if (item.type2.includes('ngắn')) badgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800';
-                else if (item.type2.includes('dài')) badgeClass = 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800';
-                else if (item.type2.includes('đôi')) badgeClass = 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 dark:border-purple-800';
-                else if (item.type2.includes('vô thanh')) badgeClass = 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800';
-                else if (item.type2.includes('hữu thanh')) badgeClass = 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-200 dark:border-rose-800';
-
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-3xl font-bold font-mono text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-slate-900 px-3 py-1 rounded-xl border border-indigo-100 dark:border-slate-700">${item.ipa}</span>
-                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold ${badgeClass}">${item.type2}</span>
-                        </div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">${item.guide}</p>
-                        <div class="text-xs font-medium text-slate-800 dark:text-slate-200 mb-4 bg-slate-50 dark:bg-slate-900 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                            <div>
-                                <i class="fa-solid fa-bookmark text-indigo-500 mr-1"></i> ${item.examples}
-                            </div>
-                            <button onclick="speakExample('${item.audioQuery}')" title="Nghe đọc ví dụ giọng tự động" class="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 hover:bg-indigo-50 text-indigo-600 dark:text-indigo-300 text-[11px] font-semibold transition border border-slate-200 dark:border-slate-700">
-                                <i class="fa-solid fa-volume-low"></i> 
-                            </button>
-                        </div>
-                    </div>
-                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700">
-                        <button onclick="playIpaAudio('${item.audioUrl}', '${item.remoteAudioUrl}')" class="w-full justify-center px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition transform active:scale-95">
-                            <i class="fa-solid fa-volume-high"></i> Nghe âm IPA
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        let currentAudio = null;
-
-        // Play IPA Audio: Local MP3 -> Remote Online MP3 ONLY (No TTS fallback for IPA sound)
-        function playIpaAudio(localUrl, remoteUrl) {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-
-            if (localUrl) {
-                currentAudio = new Audio(localUrl);
-                currentAudio.play().catch(err => {
-                    console.warn('Không thể phát file MP3 local, thử nạp URL online:', err);
-                    tryRemote();
-                });
-            } else {
-                tryRemote();
-            }
-
-            function tryRemote() {
-                if (remoteUrl) {
-                    currentAudio = new Audio(remoteUrl);
-                    currentAudio.play().catch(err => {
-                        console.warn('Không thể phát URL online:', err);
-                        alert('Không thể phát file âm thanh mẫu IPA này. Vui lòng kiểm tra kết nối internet hoặc thư mục audio local.');
-                    });
-                } else {
-                    alert('Không tìm thấy file âm thanh mẫu IPA.');
-                }
-            }
-        }
-
-        // Voice & Speed Settings Management with localStorage
-        let availableVoices = [];
-
-        function populateVoices() {
-            if (!('speechSynthesis' in window)) return;
-            const voices = window.speechSynthesis.getVoices();
-            availableVoices = voices.filter(v => v.lang.startsWith('en'));
-            
-            const voiceSelect = document.getElementById('voiceSelect');
-            if (!voiceSelect) return;
-            
-            const currentValue = voiceSelect.value;
-            voiceSelect.innerHTML = '<option value="default">Mặc định hệ thống</option>';
-            
-            availableVoices.forEach(voice => {
-                const option = document.createElement('option');
-                option.value = voice.name;
-                option.textContent = `${voice.name} (${voice.lang})`;
-                voiceSelect.appendChild(option);
-            });
-
-            loadSpeechSettings();
-        }
-
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.onvoiceschanged = populateVoices;
-        }
-
-        function updateSpeedFromSlider(val) {
-            const num = parseFloat(val);
-            const speedLabel = document.getElementById('speedValueLabel');
-            if (speedLabel) {
-                speedLabel.textContent = num.toFixed(2) + 'x';
-            }
-            saveSpeechSettings();
-        }
-
-        function adjustSpeed(delta) {
-            const slider = document.getElementById('speedSlider');
-            if (!slider) return;
-            let current = parseFloat(slider.value) || 0.7;
-            let nextVal = Math.min(1.5, Math.max(0.5, current + delta));
-            slider.value = nextVal.toFixed(2);
-            updateSpeedFromSlider(slider.value);
-        }
-
-        function loadSpeechSettings() {
-            const savedVoice = localStorage.getItem('ipa_speech_voice');
-            const savedSpeed = localStorage.getItem('ipa_speech_speed');
-            
-            const voiceSelect = document.getElementById('voiceSelect');
-            const speedSlider = document.getElementById('speedSlider');
-            
-            if (voiceSelect && savedVoice) {
-                voiceSelect.value = savedVoice;
-            }
-            if (speedSlider && savedSpeed) {
-                speedSlider.value = savedSpeed;
-                updateSpeedFromSlider(savedSpeed);
-            }
-        }
-
-        function saveSpeechSettings() {
-            const voiceSelect = document.getElementById('voiceSelect');
-            const speedSlider = document.getElementById('speedSlider');
-            
-            if (voiceSelect) {
-                localStorage.setItem('ipa_speech_voice', voiceSelect.value);
-            }
-            if (speedSlider) {
-                localStorage.setItem('ipa_speech_speed', speedSlider.value);
-            }
-        }
-
-        // Speak Example Words using Web Speech API (Text-to-Speech Engine)
-        function speakExample(words) {
-            if (!('speechSynthesis' in window)) {
-                alert('Trình duyệt của bạn không hỗ trợ giọng đọc tự động Text-to-Speech.');
-                return;
-            }
-
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-
-            window.speechSynthesis.cancel();
-
-            const formattedWords = words.split(' ').join(', ');
-            const utterance = new SpeechSynthesisUtterance(formattedWords);
-            
-            const voiceSelect = document.getElementById('voiceSelect');
-            const speedSlider = document.getElementById('speedSlider');
-            
-            if (voiceSelect && voiceSelect.value !== 'default') {
-                const selectedVoice = availableVoices.find(v => v.name === voiceSelect.value);
-                if (selectedVoice) {
-                    utterance.voice = selectedVoice;
-                }
-            }
-            
-            const speedRate = speedSlider ? parseFloat(speedSlider.value) : 0.70;
-            utterance.rate = speedRate;
-            utterance.lang = 'en-US';
-
-            window.speechSynthesis.speak(utterance);
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            filterData();
-            populateVoices();
-        });
-    </script>
+    <script src="js/theme.js"></script>
+    <script src="js/audio-player.js"></script>
+    <script src="js/app-lookup.js"></script>
 </body>
 </html>

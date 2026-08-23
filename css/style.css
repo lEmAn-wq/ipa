@@ -1,0 +1,55 @@
+/* Global Custom Styles & Animations for IPA Application */
+body {
+    font-family: 'Lexend', sans-serif;
+}
+
+/* Custom Scrollbar Styling */
+.custom-scrollbar::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Pulse Animation for Audio Button */
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.5);
+    }
+    70% {
+        transform: scale(1.03);
+        box-shadow: 0 0 0 16px rgba(79, 70, 229, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+    }
+}
+.pulse-audio {
+    animation: pulse-ring 2s infinite;
+}
+
+/* Shake Animation for Incorrect Quiz Answer */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-6px);
+    }
+    40%, 80% {
+        transform: translateX(6px);
+    }
+}
+.animate-shake {
+    animation: shake 0.4s ease-in-out;
+}

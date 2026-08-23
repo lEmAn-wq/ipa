@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luyện Tập Nghe & Nhận Biết Âm IPA Tiếng Anh</title>
+    <title>Luyện Nghe & Phân Loại Âm IPA - Bài Tập Trắc Nghiệm</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -13,101 +12,44 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Lexend', sans-serif;
-        }
-
-        @keyframes pulse-ring {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.5);
-            }
-
-            70% {
-                transform: scale(1.03);
-                box-shadow: 0 0 0 16px rgba(79, 70, 229, 0);
-            }
-
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
-            }
-        }
-
-        .pulse-audio {
-            animation: pulse-ring 2s infinite;
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            20%,
-            60% {
-                transform: translateX(-6px);
-            }
-
-            40%,
-            80% {
-                transform: translateX(6px);
-            }
-        }
-
-        .animate-shake {
-            animation: shake 0.4s ease-in-out;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
-<body
-    class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
 
     <!-- Header Section -->
-    <header
-        class="bg-indigo-700 dark:bg-slate-950 text-white shadow-lg py-5 px-4 sm:px-8 transition-colors duration-200">
+    <header class="bg-indigo-700 dark:bg-slate-950 text-white shadow-lg py-5 px-4 sm:px-8 transition-colors duration-200">
         <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-xl sm:text-2xl font-bold flex items-center gap-2.5">
-                    <i class="fa-solid fa-gamepad text-emerald-400"></i>
+                    <i class="fa-solid font-mono bg-white text-indigo-700 px-2.5 py-0.5 rounded-lg text-lg shadow">QUIZ</i>
                     Luyện Nghe & Nhận Biết Âm IPA
                 </h1>
-                <p class="text-indigo-200 dark:text-slate-400 text-xs sm:text-sm mt-0.5">Thử thách phân loại và nhận
-                    diện 44 âm phiên âm quốc tế</p>
+                <p class="text-indigo-200 dark:text-slate-400 text-xs sm:text-sm mt-0.5">Thử thách phân loại và nhận diện 44 âm phiên âm quốc tế</p>
             </div>
 
             <div class="flex items-center gap-3">
                 <!-- Theme Selector Dropdown -->
                 <div class="relative">
-                    <button id="themeDropdownBtn" onclick="toggleThemeDropdown(event)"
-                        class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white shadow transition flex items-center gap-2 active:scale-95">
+                    <button id="themeDropdownBtn" onclick="toggleThemeDropdown(event)" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white shadow transition flex items-center gap-2 active:scale-95">
                         <i id="themeBtnIcon" class="fa-solid fa-sun text-amber-300"></i>
                         <span id="themeBtnLabel">Giao diện</span>
                         <i class="fa-solid fa-chevron-down text-[10px] opacity-70"></i>
                     </button>
 
-                    <div id="themeDropdownMenu"
-                        class="hidden absolute right-0 top-full mt-2 w-44 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-50 p-2 text-xs flex flex-col gap-1">
-                        <button onclick="setTheme('light')"
-                            class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700 transition">
+                    <div id="themeDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-44 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-50 p-2 text-xs flex flex-col gap-1 text-slate-700 dark:text-slate-200">
+                        <button onclick="setTheme('light')" class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-semibold hover:bg-indigo-50 dark:hover:bg-slate-700 transition">
                             <i class="fa-solid fa-sun text-amber-500 w-4 text-center"></i> Sáng (Light)
                         </button>
-                        <button onclick="setTheme('dark')"
-                            class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700 transition">
+                        <button onclick="setTheme('dark')" class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-semibold hover:bg-indigo-50 dark:hover:bg-slate-700 transition">
                             <i class="fa-solid fa-moon text-indigo-400 w-4 text-center"></i> Tối (Dark)
                         </button>
-                        <button onclick="setTheme('system')"
-                            class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-700 transition">
+                        <button onclick="setTheme('system')" class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 font-semibold hover:bg-indigo-50 dark:hover:bg-slate-700 transition">
                             <i class="fa-solid fa-desktop text-emerald-500 w-4 text-center"></i> Tự động (Hệ thống)
                         </button>
                     </div>
                 </div>
 
-                <a href="ipa.html"
-                    class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white shadow transition flex items-center gap-2">
+                <a href="ipa.html" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white shadow transition flex items-center gap-2">
                     <i class="fa-solid fa-table-list"></i> Tra Cứu Bảng IPA
                 </a>
             </div>
@@ -118,42 +60,34 @@
     <main class="max-w-4xl mx-auto px-4 py-6 w-full flex-1">
 
         <!-- Quiz Settings / Controls Bar -->
-        <div
-            class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-700 shadow-sm mb-6 flex flex-col gap-4 transition-colors duration-200">
-
-            <div
-                class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 text-xs sm:text-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-700 shadow-sm mb-6 flex flex-col gap-4 transition-colors duration-200">
+            
+            <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 text-xs sm:text-sm">
                 <!-- Quiz Task Type Switcher -->
                 <div class="flex items-center gap-2">
                     <span class="font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">
-                        <i class="fa-solid fa-graduation-cap text-indigo-500 dark:text-indigo-400 mr-1"></i> Dạng bài:
+                        <i class="fa-solid fa-sliders text-indigo-500 dark:text-indigo-400 mr-1"></i> Dạng bài tập:
                     </span>
-                    <div
-                        class="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
-                        <button id="btnTaskListen" onclick="setQuizType('listen_symbol')"
-                            class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
+                    <div class="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+                        <button id="btnTaskListen" onclick="setQuizType('listen_symbol')" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
                             🔊 Nghe ➔ Đoán Âm IPA
                         </button>
-                        <button id="btnTaskCategory" onclick="setQuizType('visual_category')"
-                            class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
+                        <button id="btnTaskCategory" onclick="setQuizType('visual_category')" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
                             👁️ Nhìn Âm ➔ Đoán Loại
                         </button>
                     </div>
                 </div>
 
-                <!-- Interface Mode Switcher (For Listen mode) -->
+                <!-- Quiz Mode Switcher (Visible only in listen_symbol mode) -->
                 <div id="interfaceModeContainer" class="flex items-center gap-2">
                     <span class="font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                         <i class="fa-solid fa-layer-group text-indigo-500 dark:text-indigo-400 mr-1"></i> Giao diện:
                     </span>
-                    <div
-                        class="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
-                        <button id="btnMode4Choices" onclick="setQuizMode('4choices')"
-                            class="px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
+                    <div class="bg-slate-100 dark:bg-slate-900 p-1 rounded-xl flex items-center gap-1 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+                        <button id="btnMode4Choices" onclick="setQuizMode('4choices')" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
                             🎯 4 Đáp án
                         </button>
-                        <button id="btnModeAll44" onclick="setQuizMode('all44')"
-                            class="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
+                        <button id="btnModeAll44" onclick="setQuizMode('all44')" class="px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
                             🧩 Bàn Phím IPA
                         </button>
                     </div>
@@ -161,157 +95,113 @@
             </div>
 
             <!-- Second Row: Category Filter -->
-            <div
-                class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs sm:text-sm">
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs sm:text-sm">
                 <div class="flex flex-wrap items-center gap-3">
                     <!-- Multi-select Category Filter Container (OR condition) -->
                     <div id="categoryFilterContainer" class="relative">
-                        <button id="categoryDropdownBtn" onclick="toggleCategoryDropdown(event)"
-                            class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-2 active:scale-95 transition">
+                        <button id="categoryDropdownBtn" onclick="toggleCategoryDropdown(event)" class="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center gap-2 active:scale-95 transition">
                             <i class="fa-solid fa-filter text-indigo-500 dark:text-indigo-400"></i>
                             <span id="selectedCategoriesLabel">Bộ Âm: Tất cả (44)</span>
                             <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                         </button>
 
                         <!-- Multi-select Dropdown Popover -->
-                        <div id="categoryDropdownMenu"
-                            class="hidden absolute left-0 sm:right-0 sm:left-auto top-full mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-30 p-3.5 flex flex-col gap-2">
-                            <div
-                                class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200">
+                        <div id="categoryDropdownMenu" class="hidden absolute left-0 sm:right-0 sm:left-auto top-full mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-30 p-3.5 flex flex-col gap-2">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200">
                                 <span>Chọn bộ âm (Điều kiện OR):</span>
-                                <button onclick="selectAllCategories(true)"
-                                    class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-semibold">Tất
-                                    cả</button>
+                                <button onclick="selectAllCategories(true)" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-semibold">Tất cả</button>
                             </div>
 
                             <div class="flex flex-col gap-1.5 text-xs">
-                                <label
-                                    class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
-                                    <input type="checkbox" value="Nguyên âm ngắn" onchange="onCategoryCheckboxChange()"
-                                        class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
-                                    <span class="font-medium text-slate-700 dark:text-slate-200">Nguyên âm ngắn
-                                        (7)</span>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Nguyên âm ngắn" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700 dark:text-slate-200">Nguyên âm ngắn (7)</span>
                                 </label>
-                                <label
-                                    class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
-                                    <input type="checkbox" value="Nguyên âm dài" onchange="onCategoryCheckboxChange()"
-                                        class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
-                                    <span class="font-medium text-slate-700 dark:text-slate-200">Nguyên âm dài
-                                        (5)</span>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Nguyên âm dài" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700 dark:text-slate-200">Nguyên âm dài (5)</span>
                                 </label>
-                                <label
-                                    class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
-                                    <input type="checkbox" value="Nguyên âm đôi" onchange="onCategoryCheckboxChange()"
-                                        class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
-                                    <span class="font-medium text-slate-700 dark:text-slate-200">Nguyên âm đôi
-                                        (8)</span>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Nguyên âm đôi" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700 dark:text-slate-200">Nguyên âm đôi (8)</span>
                                 </label>
-                                <label
-                                    class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
-                                    <input type="checkbox" value="Phụ âm vô thanh" onchange="onCategoryCheckboxChange()"
-                                        class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
-                                    <span class="font-medium text-slate-700 dark:text-slate-200">Phụ âm vô thanh
-                                        (9)</span>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Phụ âm vô thanh" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700 dark:text-slate-200">Phụ âm vô thanh (9)</span>
                                 </label>
-                                <label
-                                    class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
-                                    <input type="checkbox" value="Phụ âm hữu thanh"
-                                        onchange="onCategoryCheckboxChange()"
-                                        class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
-                                    <span class="font-medium text-slate-700 dark:text-slate-200">Phụ âm hữu thanh
-                                        (15)</span>
+                                <label class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 p-1.5 rounded-lg transition">
+                                    <input type="checkbox" value="Phụ âm hữu thanh" onchange="onCategoryCheckboxChange()" class="cat-checkbox rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="font-medium text-slate-700 dark:text-slate-200">Phụ âm hữu thanh (15)</span>
                                 </label>
                             </div>
 
-                            <div
-                                class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px]">
-                                <button onclick="selectAllCategories(false)"
-                                    class="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:underline">Bỏ
-                                    chọn hết</button>
-                                <button onclick="applyCategorySelection()"
-                                    class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition shadow-sm">Áp
-                                    dụng</button>
+                            <div class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px]">
+                                <button onclick="selectAllCategories(false)" class="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:underline">Bỏ chọn hết</button>
+                                <button onclick="applyCategorySelection()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition shadow-sm">Áp dụng</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Reset Button -->
-                <button onclick="restartQuiz()" title="Tải lại bộ câu hỏi mới"
-                    class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold transition flex items-center justify-center gap-1.5 active:scale-95">
+                <button onclick="restartQuiz()" title="Tải lại bộ câu hỏi mới" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold transition flex items-center justify-center gap-1.5 active:scale-95">
                     <i class="fa-solid fa-rotate text-indigo-500 dark:text-indigo-400"></i> Đổi bộ câu hỏi mới
                 </button>
             </div>
-
         </div>
 
         <!-- Quiz Dashboard Stats Card -->
-        <div
-            class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm mb-6 transition-colors duration-200">
-
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm mb-6 transition-colors duration-200">
+            
             <!-- Progress Bar -->
-            <div
-                class="flex justify-between items-center mb-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <div class="flex justify-between items-center mb-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
                 <span id="questionProgressText">Câu 1 / 44</span>
                 <span id="scoreText" class="text-indigo-600 dark:text-indigo-400 font-bold">Điểm: 0</span>
             </div>
-            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5 mb-5 overflow-hidden">
-                <div id="progressBar"
-                    class="bg-indigo-600 dark:bg-indigo-500 h-2.5 rounded-full transition-all duration-300"
-                    style="width: 10%;"></div>
+            <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full mb-5 overflow-hidden">
+                <div id="progressBar" class="bg-indigo-600 dark:bg-indigo-500 h-2.5 rounded-full transition-all duration-300" style="width: 10%;"></div>
             </div>
 
             <!-- Streak Badge -->
             <div class="flex justify-center mb-4">
-                <span id="streakBadge"
-                    class="hidden inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800/60">
+                <span id="streakBadge" class="hidden inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800/60">
                     <i class="fa-solid fa-fire text-orange-500"></i> Chuỗi đúng: <span id="streakVal">0</span>
                 </span>
             </div>
 
             <!-- Question Target Display (Audio Card or Visual Symbol Card) -->
-            <div id="targetCardContainer"
-                class="text-center py-6 px-4 bg-indigo-50/60 dark:bg-slate-900/60 rounded-2xl border border-indigo-100 dark:border-slate-700/80 mb-6 transition-colors duration-200">
+            <div id="targetCardContainer" class="text-center py-6 px-4 bg-indigo-50/60 dark:bg-slate-900/60 rounded-2xl border border-indigo-100 dark:border-slate-700/80 mb-6 transition-colors duration-200">
                 <!-- Dynamic Content (Play Audio Button or Visual Symbol) -->
             </div>
 
-            <!-- Options Section Header -->
-            <p id="choicesHintText"
-                class="text-xs font-semibold text-slate-600 dark:text-slate-300 mb-3 flex items-center justify-between">
+            <!-- Options Title -->
+            <p id="choicesHintText" class="text-xs font-semibold text-slate-600 dark:text-slate-300 mb-3 flex items-center justify-between">
                 <span id="hintTitleText">Chọn 1 âm IPA đúng bên dưới:</span>
-                <span id="modeNoticeBadge"
-                    class="text-[11px] font-normal text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-900 px-2.5 py-0.5 rounded-full border border-indigo-100 dark:border-slate-700">🔊
-                    Nghe âm ➔ Đoán âm IPA</span>
+                <span id="modeNoticeBadge" class="text-[11px] font-normal text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-900 px-2.5 py-0.5 rounded-full border border-indigo-100 dark:border-slate-700">🔊 Nghe âm ➔ Đoán âm IPA</span>
             </p>
 
             <!-- Options Container (Dynamic: 4 Choices, 44 IPA Grid, or Category Choices) -->
-            <div id="optionsGrid" class="grid gap-2.5 sm:gap-3.5 mb-6">
-                <!-- Dynamic choice buttons -->
+            <div id="optionsGrid" class="grid grid-cols-2 gap-3 sm:gap-4 mb-5">
+                <!-- Dynamic Buttons -->
             </div>
 
             <!-- Explanation & Details Box (Revealed after answer) -->
-            <div id="explanationBox"
-                class="hidden bg-slate-50 dark:bg-slate-900/70 p-4 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 leading-relaxed mb-5">
+            <div id="explanationBox" class="hidden bg-slate-50 dark:bg-slate-900/70 p-4 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 leading-relaxed mb-5">
                 <div class="flex items-center justify-between font-bold mb-1">
-                    <span id="expIpaTitle"
-                        class="text-sm font-mono text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-800 px-2.5 py-0.5 rounded border border-indigo-200 dark:border-slate-700">/ɪ/</span>
+                    <span id="expIpaTitle" class="text-sm font-mono text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-800 px-2.5 py-0.5 rounded border border-indigo-200 dark:border-slate-700">/ɪ/</span>
                     <span id="expTypeBadge" class="text-[11px] text-slate-500 dark:text-slate-400">Nguyên âm ngắn</span>
                 </div>
                 <p id="expGuide" class="text-slate-600 dark:text-slate-300 mb-2">Mô tả khẩu hình...</p>
-                <div class="font-medium text-slate-800 dark:text-slate-100">
-                    <i class="fa-solid fa-bookmark text-indigo-500 dark:text-indigo-400 mr-1"></i> Ví dụ: <span
-                        id="expExamples" class="font-bold">his /hɪz/</span>
+                <div class="font-medium text-slate-800 dark:text-slate-200">
+                    <i class="fa-solid fa-bookmark text-indigo-500 dark:text-indigo-400 mr-1"></i> Ví dụ: <span id="expExamples" class="font-bold">his /hɪz/</span>
                 </div>
             </div>
 
-            <!-- Next Question Action Button -->
+            <!-- Action Area / Next Question Button -->
             <div id="actionArea" class="hidden text-center">
-                <button onclick="nextQuestion()"
-                    class="w-full sm:w-auto px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition transform active:scale-95 inline-flex items-center justify-center gap-2">
+                <button onclick="nextQuestion()" class="w-full sm:w-auto px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition transform active:scale-95 inline-flex items-center justify-center gap-2">
                     <span>Câu tiếp theo</span>
-                    <span
-                        class="text-[11px] font-normal text-indigo-200 bg-indigo-800/50 px-2 py-0.5 rounded-lg border border-indigo-500/40">Enter
-                        ↵ / ➔ / Space</span>
+                    <span class="text-[11px] font-normal text-indigo-200 bg-indigo-800/50 px-2 py-0.5 rounded-lg border border-indigo-500/40">Enter ↵ / ➔ / Space</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
@@ -319,21 +209,16 @@
     </main>
 
     <!-- Quiz Completion Summary Modal -->
-    <div id="summaryModal"
-        class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div
-            class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center shadow-2xl border border-slate-100 dark:border-slate-700 transform transition-all scale-100">
-            <div
-                class="w-16 h-16 bg-amber-100 dark:bg-amber-950/60 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-amber-200 dark:border-amber-800/60">
+    <div id="summaryModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center shadow-2xl border border-slate-100 dark:border-slate-700 transform transition-all scale-100">
+            <div class="w-16 h-16 bg-amber-100 dark:bg-amber-950/60 text-amber-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-amber-200 dark:border-amber-800/60">
                 <i class="fa-solid fa-trophy"></i>
             </div>
-
+            
             <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">Hoàn Thành Bài Tập!</h2>
-            <p id="summaryModalText" class="text-xs text-slate-500 dark:text-slate-400 mb-5">Bạn vừa hoàn thành lượt
-                luyện tập âm IPA</p>
+            <p id="summaryModalText" class="text-xs text-slate-500 dark:text-slate-400 mb-5">Bạn vừa hoàn thành lượt luyện tập âm IPA</p>
 
-            <div
-                class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 mb-6 grid grid-cols-2 gap-3 text-center">
+            <div class="bg-slate-50 dark:bg-slate-900 rounded-2xl p-4 border border-slate-100 dark:border-slate-700 mb-6 grid grid-cols-2 gap-3 text-center">
                 <div class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                     <span class="text-xs text-slate-500 dark:text-slate-400 block mb-0.5">Số câu đúng</span>
                     <span id="finalScore" class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">8/10</span>
@@ -345,12 +230,10 @@
             </div>
 
             <div class="flex gap-3">
-                <button onclick="restartQuiz()"
-                    class="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition transform active:scale-95 flex items-center justify-center gap-2">
+                <button onclick="restartQuiz()" class="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition transform active:scale-95 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-rotate"></i> Luyện lại
                 </button>
-                <a href="ipa.html"
-                    class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-sm transition flex items-center justify-center gap-2">
+                <a href="ipa.html" class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-sm transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-table-list"></i> Tra cứu
                 </a>
             </div>
@@ -358,544 +241,14 @@
     </div>
 
     <!-- Footer -->
-    <footer
-        class="bg-slate-800 dark:bg-slate-950 text-slate-400 dark:text-slate-500 text-center py-4 text-xs transition-colors duration-200">
+    <footer class="bg-slate-800 dark:bg-slate-950 text-slate-400 dark:text-slate-500 text-center py-4 text-xs transition-colors duration-200">
         <p>Hệ thống bài tập luyện nghe & phân loại 44 âm chuẩn phiên âm quốc tế IPA tiếng Anh</p>
     </footer>
 
-    <!-- Load Dataset JS -->
+    <!-- Modular External Scripts -->
     <script src="js/ipa-data.js"></script>
-
-    <!-- Quiz Engine Script -->
-    <script>
-        // --- Theme Management System ---
-        function initTheme() {
-            const savedTheme = localStorage.getItem('ipa_theme') || 'system';
-            applyTheme(savedTheme);
-        }
-
-        function applyTheme(theme) {
-            localStorage.setItem('ipa_theme', theme);
-            const isDarkSystem = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const shouldBeDark = theme === 'dark' || (theme === 'system' && isDarkSystem);
-
-            if (shouldBeDark) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-
-            const icon = document.getElementById('themeBtnIcon');
-            const label = document.getElementById('themeBtnLabel');
-            if (icon && label) {
-                if (theme === 'light') {
-                    icon.className = 'fa-solid fa-sun text-amber-300';
-                    label.textContent = 'Sáng';
-                } else if (theme === 'dark') {
-                    icon.className = 'fa-solid fa-moon text-indigo-300';
-                    label.textContent = 'Tối';
-                } else {
-                    icon.className = 'fa-solid fa-desktop text-emerald-300';
-                    label.textContent = 'Tự động';
-                }
-            }
-        }
-
-        function setTheme(theme) {
-            applyTheme(theme);
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) menu.classList.add('hidden');
-        }
-
-        function toggleThemeDropdown(event) {
-            if (event) event.stopPropagation();
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) menu.classList.toggle('hidden');
-        }
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-            if (localStorage.getItem('ipa_theme') === 'system') {
-                applyTheme('system');
-            }
-        });
-
-        // Initialize Theme immediately
-        initTheme();
-
-        // --- Quiz System State ---
-        let quizType = 'listen_symbol'; // 'listen_symbol' or 'visual_category'
-        let quizMode = '4choices'; // '4choices' or 'all44'
-        let currentQuestionIndex = 0;
-        let currentScore = 0;
-        let streak = 0;
-        let questionsList = [];
-        let currentTargetItem = null;
-        let answered = false;
-        let currentAudio = null;
-
-        const CATEGORY_LIST = [
-            { name: "Nguyên âm ngắn", badge: "bg-emerald-100 text-emerald-800 border-emerald-300" },
-            { name: "Nguyên âm dài", badge: "bg-blue-100 text-blue-800 border-blue-300" },
-            { name: "Nguyên âm đôi", badge: "bg-purple-100 text-purple-800 border-purple-300" },
-            { name: "Phụ âm vô thanh", badge: "bg-amber-100 text-amber-800 border-amber-300" },
-            { name: "Phụ âm hữu thanh", badge: "bg-rose-100 text-rose-800 border-rose-300" }
-        ];
-
-        // Shuffle Array helper
-        function shuffle(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
-            }
-            return arr;
-        }
-
-        // Multi-select Category Dropdown Handlers (OR Condition)
-        function toggleCategoryDropdown(event) {
-            if (event) event.stopPropagation();
-            const menu = document.getElementById('categoryDropdownMenu');
-            if (menu) menu.classList.toggle('hidden');
-        }
-
-        document.addEventListener('click', (event) => {
-            const catDropdown = document.getElementById('categoryFilterContainer');
-            const catMenu = document.getElementById('categoryDropdownMenu');
-            if (catDropdown && catMenu && !catDropdown.contains(event.target)) {
-                catMenu.classList.add('hidden');
-            }
-
-            const themeDropdown = document.getElementById('themeDropdownBtn');
-            const themeMenu = document.getElementById('themeDropdownMenu');
-            if (themeDropdown && themeMenu && !themeDropdown.parentElement.contains(event.target)) {
-                themeMenu.classList.add('hidden');
-            }
-        });
-
-        function getSelectedCategories() {
-            const checkboxes = document.querySelectorAll('.cat-checkbox:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
-        }
-
-        function selectAllCategories(check) {
-            const checkboxes = document.querySelectorAll('.cat-checkbox');
-            checkboxes.forEach(cb => cb.checked = check);
-            onCategoryCheckboxChange();
-        }
-
-        function onCategoryCheckboxChange() {
-            const selected = getSelectedCategories();
-            const label = document.getElementById('selectedCategoriesLabel');
-            if (!label) return;
-
-            if (selected.length === 0 || selected.length === 5) {
-                label.textContent = "Bộ Âm: Tất cả (44)";
-            } else if (selected.length === 1) {
-                label.textContent = `Bộ Âm: ${selected[0]}`;
-            } else {
-                label.textContent = `Bộ Âm: ${selected.length} nhóm được chọn`;
-            }
-        }
-
-        function applyCategorySelection() {
-            const selected = getSelectedCategories();
-            if (quizType === 'visual_category' && selected.length === 1) {
-                alert('Ở dạng bài Nhìn âm ➔ Đoán loại, bạn cần chọn ít nhất 2 nhóm âm trở lên để bài trắc nghiệm phân loại có ý nghĩa!');
-                return;
-            }
-            const menu = document.getElementById('categoryDropdownMenu');
-            if (menu) menu.classList.add('hidden');
-            restartQuiz();
-        }
-
-        function getFilteredPool() {
-            const selected = getSelectedCategories();
-            if (selected.length === 0 || selected.length === 5) {
-                return ipaData;
-            }
-            // Multi-select OR condition filter
-            return ipaData.filter(item => selected.includes(item.type2));
-        }
-
-        // Set Quiz Task Type ('listen_symbol' vs 'visual_category')
-        function setQuizType(type) {
-            quizType = type;
-            const btnListen = document.getElementById('btnTaskListen');
-            const btnCategory = document.getElementById('btnTaskCategory');
-            const interfaceContainer = document.getElementById('interfaceModeContainer');
-
-            if (type === 'listen_symbol') {
-                btnListen.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
-                btnCategory.className = 'px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition';
-                interfaceContainer.classList.remove('hidden');
-            } else {
-                btnCategory.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
-                btnListen.className = 'px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition';
-                interfaceContainer.classList.add('hidden');
-
-                // If currently only 1 category selected in visual_category, select all by default
-                const selected = getSelectedCategories();
-                if (selected.length === 1) {
-                    selectAllCategories(true);
-                }
-            }
-            restartQuiz();
-        }
-
-        // Set Quiz Mode ('4choices' vs 'all44')
-        function setQuizMode(mode) {
-            quizMode = mode;
-            const btn4 = document.getElementById('btnMode4Choices');
-            const btnAll = document.getElementById('btnModeAll44');
-
-            if (mode === '4choices') {
-                btn4.className = 'px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
-                btnAll.className = 'px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition';
-            } else {
-                btnAll.className = 'px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm transition';
-                btn4.className = 'px-2.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition';
-            }
-            restartQuiz();
-        }
-
-        // Initialize / Restart Quiz
-        function restartQuiz() {
-            document.getElementById('summaryModal').classList.add('hidden');
-
-            let filteredData = getFilteredPool();
-
-            if (filteredData.length < 4 && quizMode === '4choices' && quizType === 'listen_symbol') {
-                alert('Bộ âm được chọn có ít hơn 4 âm, không đủ tạo 4 đáp án trắc nghiệm. Đang chuyển sang chọn Tất cả âm.');
-                selectAllCategories(true);
-                filteredData = getFilteredPool();
-            }
-
-            // Shuffle pool and use 100% of the pool (no repetition)
-            questionsList = shuffle(filteredData);
-
-            currentQuestionIndex = 0;
-            currentScore = 0;
-            streak = 0;
-
-            updateStatsUI();
-            loadQuestion(currentQuestionIndex);
-        }
-
-        // Load Question at index
-        function loadQuestion(index) {
-            answered = false;
-            document.getElementById('explanationBox').classList.add('hidden');
-            document.getElementById('actionArea').classList.add('hidden');
-
-            currentTargetItem = questionsList[index];
-
-            // Update Progress UI
-            document.getElementById('questionProgressText').textContent = `Câu ${index + 1} / ${questionsList.length}`;
-            document.getElementById('progressBar').style.width = `${((index + 1) / questionsList.length) * 100}%`;
-
-            const targetContainer = document.getElementById('targetCardContainer');
-            const hintTitle = document.getElementById('hintTitleText');
-            const noticeBadge = document.getElementById('modeNoticeBadge');
-            const optionsGrid = document.getElementById('optionsGrid');
-            optionsGrid.innerHTML = '';
-
-            if (quizType === 'listen_symbol') {
-                // Dạng 1: Nghe âm -> Đoán IPA
-                targetContainer.innerHTML = `
-                    <p class="text-xs text-indigo-700 dark:text-indigo-300 font-medium mb-3">Bấm nút bên dưới để nghe câu hỏi âm IPA</p>
-                    <button id="btnPlayAudio" onclick="playTargetAudio()" class="pulse-audio px-7 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base sm:text-lg shadow-md transition transform active:scale-95 inline-flex items-center gap-3">
-                        <i class="fa-solid fa-volume-high text-xl"></i>
-                        <span>NGHE ÂM IPA</span>
-                    </button>
-                    <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-3">(Có thể bấm nút hoặc dùng phím Spacebar để nghe lại)</p>
-                `;
-                hintTitle.textContent = "Chọn 1 ký hiệu âm IPA đúng bên dưới:";
-                noticeBadge.textContent = quizMode === '4choices' ? "🎯 Trắc nghiệm 4 đáp án" : "🧩 Bàn Phím IPA (Toàn Cảnh)";
-
-                let currentPool = getFilteredPool();
-
-                if (quizMode === '4choices') {
-                    optionsGrid.className = 'grid grid-cols-2 gap-3 sm:gap-4 mb-5';
-                    let distractors = currentPool.filter(item => item.id !== currentTargetItem.id);
-                    distractors = shuffle(distractors).slice(0, 3);
-                    const choices = shuffle([currentTargetItem, ...distractors]);
-
-                    choices.forEach((choice, idx) => {
-                        const btn = document.createElement('button');
-                        btn.className = 'choice-btn relative bg-white dark:bg-slate-800 hover:bg-indigo-50/70 dark:hover:bg-slate-700 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-mono font-bold text-2xl sm:text-3xl py-4.5 rounded-2xl shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-1';
-                        btn.setAttribute('data-id', choice.id);
-                        btn.onclick = () => checkAnswerSymbol(choice, btn);
-                        btn.innerHTML = `
-                            <span class="absolute top-2 left-2.5 text-[10px] font-sans font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 flex items-center gap-1">
-                                <i class="fa-solid fa-keyboard text-[9px] text-indigo-500 dark:text-indigo-400"></i> Phím ${idx + 1}
-                            </span>
-                            <span>${choice.ipa}</span>
-                            <span class="text-[11px] font-sans font-normal text-slate-400 dark:text-slate-400">${choice.type2}</span>
-                        `;
-                        optionsGrid.appendChild(btn);
-                    });
-                } else {
-                    optionsGrid.className = 'grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 mb-5';
-                    currentPool.forEach((choice) => {
-                        const btn = document.createElement('button');
-                        btn.className = 'choice-btn bg-white dark:bg-slate-800 hover:bg-indigo-600 dark:hover:bg-indigo-600 hover:text-white border-2 border-slate-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-300 font-mono font-bold text-xl sm:text-2xl py-3 rounded-xl shadow-sm transition transform active:scale-95 flex items-center justify-center';
-                        btn.setAttribute('data-id', choice.id);
-                        btn.setAttribute('title', `${choice.ipa} (${choice.type2})`);
-                        btn.onclick = () => checkAnswerSymbol(choice, btn);
-                        btn.innerHTML = `<span>${choice.ipa}</span>`;
-                        optionsGrid.appendChild(btn);
-                    });
-                }
-
-                // Auto play target audio
-                setTimeout(() => playTargetAudio(), 300);
-
-            } else {
-                // Dạng 2: Nhìn IPA -> Đoán Phân Loại (Category)
-                targetContainer.innerHTML = `
-                    <p class="text-xs text-indigo-700 dark:text-indigo-300 font-medium mb-2">Cho ký hiệu âm vị IPA bên dưới:</p>
-                    <div class="inline-block bg-white dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-slate-700 font-mono font-bold text-4xl sm:text-5xl px-7 py-3 rounded-2xl shadow-sm mb-3">
-                        ${currentTargetItem.ipa}
-                    </div>
-                    <div>
-                        <button onclick="playTargetAudio()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs transition flex items-center gap-1.5 mx-auto shadow-sm active:scale-95">
-                            <i class="fa-solid fa-volume-high"></i> Nghe thử âm thanh mẫu
-                        </button>
-                    </div>
-                `;
-                hintTitle.textContent = "Ký hiệu âm trên thuộc loại phân loại nào bên dưới?";
-                noticeBadge.textContent = "👁️ Nhìn IPA ➔ Đoán loại âm";
-
-                const activeCatNames = getSelectedCategories();
-                let activeCategoryList = CATEGORY_LIST;
-                if (activeCatNames.length > 0 && activeCatNames.length < 5) {
-                    activeCategoryList = CATEGORY_LIST.filter(cat => activeCatNames.includes(cat.name));
-                }
-
-                optionsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-5';
-
-                activeCategoryList.forEach((cat, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = `category-choice-btn bg-white dark:bg-slate-800 hover:bg-indigo-50/80 dark:hover:bg-slate-700 border-2 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-sm transition transform active:scale-95 flex items-center justify-between gap-2`;
-                    btn.setAttribute('data-cat', cat.name);
-                    btn.onclick = () => checkAnswerCategory(cat.name, btn);
-                    btn.innerHTML = `
-                        <div class="flex items-center gap-2.5 min-w-0">
-                            <span class="text-[10px] font-sans font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-600 flex items-center gap-1 shrink-0 whitespace-nowrap">
-                                <i class="fa-solid fa-keyboard text-[9px] text-indigo-500 dark:text-indigo-400"></i> Phím ${idx + 1}
-                            </span>
-                            <span class="truncate">${cat.name}</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-slate-400 text-xs shrink-0"></i>
-                    `;
-                    optionsGrid.appendChild(btn);
-                });
-            }
-        }
-
-        // Play Target Audio with 2-tier fallback
-        function playTargetAudio() {
-            if (!currentTargetItem) return;
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-
-            currentAudio = new Audio(currentTargetItem.audioUrl);
-            currentAudio.play().catch(err => {
-                console.warn('Không thể phát file local, thử tải từ URL remote:', err);
-                if (currentTargetItem.remoteAudioUrl) {
-                    currentAudio = new Audio(currentTargetItem.remoteAudioUrl);
-                    currentAudio.play().catch(err2 => {
-                        console.warn('Không thể phát audio mẫu.');
-                    });
-                }
-            });
-        }
-
-        // Check Answer for Dạng 1 (Nghe -> Đoán Ký Hiệu IPA)
-        function checkAnswerSymbol(selectedChoice, btnEl) {
-            if (answered) return;
-            answered = true;
-
-            const allButtons = document.querySelectorAll('.choice-btn');
-
-            if (selectedChoice.id === currentTargetItem.id) {
-                currentScore++;
-                streak++;
-                btnEl.className = quizMode === '4choices'
-                    ? 'choice-btn bg-emerald-500 border-2 border-emerald-600 text-white font-mono font-bold text-2xl sm:text-3xl py-4 rounded-2xl shadow-md flex flex-col items-center justify-center gap-1'
-                    : 'choice-btn bg-emerald-500 border-2 border-emerald-600 text-white font-mono font-bold text-xl sm:text-2xl py-3 rounded-xl shadow-md flex items-center justify-center';
-
-                if (quizMode === '4choices') {
-                    btnEl.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <span>${selectedChoice.ipa}</span>
-                            <i class="fa-solid fa-circle-check text-xl text-emerald-100"></i>
-                        </div>
-                        <span class="text-[11px] font-sans font-normal text-emerald-100">${selectedChoice.type2}</span>
-                    `;
-                } else {
-                    btnEl.innerHTML = `<span>${selectedChoice.ipa} ✓</span>`;
-                }
-            } else {
-                streak = 0;
-                btnEl.className = quizMode === '4choices'
-                    ? 'choice-btn bg-rose-500 border-2 border-rose-600 text-white font-mono font-bold text-2xl sm:text-3xl py-4 rounded-2xl shadow-md animate-shake flex flex-col items-center justify-center gap-1'
-                    : 'choice-btn bg-rose-500 border-2 border-rose-600 text-white font-mono font-bold text-xl sm:text-2xl py-3 rounded-xl shadow-md animate-shake flex items-center justify-center';
-
-                if (quizMode === '4choices') {
-                    btnEl.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <span>${selectedChoice.ipa}</span>
-                            <i class="fa-solid fa-circle-xmark text-xl text-rose-100"></i>
-                        </div>
-                        <span class="text-[11px] font-sans font-normal text-rose-100">${selectedChoice.type2}</span>
-                    `;
-                } else {
-                    btnEl.innerHTML = `<span>${selectedChoice.ipa} ✕</span>`;
-                }
-
-                allButtons.forEach(b => {
-                    if (parseInt(b.getAttribute('data-id')) === currentTargetItem.id) {
-                        b.className = quizMode === '4choices'
-                            ? 'choice-btn bg-emerald-100 dark:bg-emerald-950 border-2 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-mono font-bold text-2xl sm:text-3xl py-4 rounded-2xl flex flex-col items-center justify-center gap-1'
-                            : 'choice-btn bg-emerald-500 border-2 border-emerald-600 text-white font-mono font-bold text-xl sm:text-2xl py-3 rounded-xl flex items-center justify-center';
-                        if (quizMode === 'all44') {
-                            b.innerHTML = `<span>${currentTargetItem.ipa} ✓</span>`;
-                        }
-                    }
-                });
-            }
-
-            allButtons.forEach(b => b.onclick = null);
-            finishQuestionTurn();
-        }
-
-        // Check Answer for Dạng 2 (Nhìn IPA -> Đoán Phân Loại Category)
-        function checkAnswerCategory(selectedCatName, btnEl) {
-            if (answered) return;
-            answered = true;
-
-            const allButtons = document.querySelectorAll('.category-choice-btn');
-
-            if (selectedCatName === currentTargetItem.type2) {
-                currentScore++;
-                streak++;
-                btnEl.className = 'category-choice-btn bg-emerald-500 border-2 border-emerald-600 text-white font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-between';
-                btnEl.innerHTML = `
-                    <span>${selectedCatName}</span>
-                    <i class="fa-solid fa-circle-check text-lg text-emerald-100"></i>
-                `;
-            } else {
-                streak = 0;
-                btnEl.className = 'category-choice-btn bg-rose-500 border-2 border-rose-600 text-white font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl shadow-md animate-shake flex items-center justify-between';
-                btnEl.innerHTML = `
-                    <span>${selectedCatName}</span>
-                    <i class="fa-solid fa-circle-xmark text-lg text-rose-100"></i>
-                `;
-
-                // Highlight correct category
-                allButtons.forEach(b => {
-                    if (b.getAttribute('data-cat') === currentTargetItem.type2) {
-                        b.className = 'category-choice-btn bg-emerald-100 dark:bg-emerald-950 border-2 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold text-sm sm:text-base py-3.5 px-4 rounded-2xl flex items-center justify-between';
-                        b.innerHTML = `
-                            <span>${currentTargetItem.type2}</span>
-                            <i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400 font-bold"></i>
-                        `;
-                    }
-                });
-            }
-
-            allButtons.forEach(b => b.onclick = null);
-            playTargetAudio();
-            finishQuestionTurn();
-        }
-
-        function finishQuestionTurn() {
-            updateStatsUI();
-
-            // Reveal Explanation Box
-            document.getElementById('expIpaTitle').textContent = currentTargetItem.ipa;
-            document.getElementById('expTypeBadge').textContent = `${currentTargetItem.type1} • ${currentTargetItem.type2}`;
-            document.getElementById('expGuide').textContent = currentTargetItem.guide;
-            document.getElementById('expExamples').textContent = currentTargetItem.examples;
-            document.getElementById('explanationBox').classList.remove('hidden');
-
-            // Show Next Question Button
-            document.getElementById('actionArea').classList.remove('hidden');
-        }
-
-        // Next Question or Finish Quiz
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questionsList.length) {
-                loadQuestion(currentQuestionIndex);
-            } else {
-                showSummaryModal();
-            }
-        }
-
-        // Update Stats UI
-        function updateStatsUI() {
-            document.getElementById('scoreText').textContent = `Điểm: ${currentScore}`;
-
-            const streakBadge = document.getElementById('streakBadge');
-            if (streak > 1) {
-                streakBadge.classList.remove('hidden');
-                document.getElementById('streakVal').textContent = streak;
-            } else {
-                streakBadge.classList.add('hidden');
-            }
-        }
-
-        // Show Summary Modal
-        function showSummaryModal() {
-            const finalPercent = Math.round((currentScore / questionsList.length) * 100);
-            document.getElementById('finalScore').textContent = `${currentScore}/${questionsList.length}`;
-            document.getElementById('finalAccuracy').textContent = `${finalPercent}%`;
-            document.getElementById('summaryModalText').textContent = `Bạn vừa hoàn thành lượt luyện tập ${questionsList.length} câu hỏi âm IPA!`;
-            document.getElementById('summaryModal').classList.remove('hidden');
-        }
-
-        // Keyboard Shortcuts Handler: Fast navigation & controls
-        document.addEventListener('keydown', (e) => {
-            if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-
-            // 1. Enter, ArrowRight, or Spacebar -> Move to NEXT question if already answered
-            if (['Enter', 'ArrowRight', 'Space'].includes(e.code)) {
-                if (answered) {
-                    e.preventDefault();
-                    nextQuestion();
-                    return;
-                }
-            }
-
-            // 2. Spacebar -> Re-play audio if not answered yet
-            if (e.code === 'Space' && !answered) {
-                e.preventDefault();
-                playTargetAudio();
-                return;
-            }
-
-            // 3. Number keys 1..5 -> Pick choices for 4-choices or visual category mode
-            if (!answered) {
-                const numKey = parseInt(e.key);
-                if (numKey >= 1 && numKey <= 5) {
-                    const activeChoiceBtns = document.querySelectorAll('#optionsGrid .choice-btn, #optionsGrid .category-choice-btn');
-                    if (activeChoiceBtns[numKey - 1]) {
-                        e.preventDefault();
-                        activeChoiceBtns[numKey - 1].click();
-                    }
-                }
-            }
-        });
-
-        // Initialize on Load
-        document.addEventListener('DOMContentLoaded', () => {
-            restartQuiz();
-        });
-    </script>
+    <script src="js/theme.js"></script>
+    <script src="js/audio-player.js"></script>
+    <script src="js/app-exercise.js"></script>
 </body>
-
 </html>
