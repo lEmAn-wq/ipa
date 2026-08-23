@@ -74,6 +74,44 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Voice & Speed Settings Bar -->
+            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-3 text-xs sm:text-sm">
+                <div class="flex items-center gap-1.5 text-indigo-900 font-semibold">
+                    <i class="fa-solid fa-sliders text-indigo-600"></i>
+                    <span>Tùy chỉnh giọng đọc ví dụ (AI):</span>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Select Voice -->
+                    <div class="flex items-center gap-1.5">
+                        <label for="voiceSelect" class="text-slate-600 font-medium">Giọng đọc:</label>
+                        <select id="voiceSelect" onchange="saveSpeechSettings()" class="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium max-w-[180px] sm:max-w-[220px] truncate">
+                            <option value="default">Mặc định hệ thống</option>
+                        </select>
+                    </div>
+
+                    <!-- YouTube-style Speed Slider -->
+                    <div class="flex items-center gap-2">
+                        <label for="speedSlider" class="text-slate-600 font-medium whitespace-nowrap">Tốc độ:</label>
+                        <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-300 rounded-xl px-2.5 py-1">
+                            <button onclick="adjustSpeed(-0.05)" title="Giảm tốc độ (0.05x)" class="w-6 h-6 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs transition active:scale-95">
+                                <i class="fa-solid fa-minus text-[10px]"></i>
+                            </button>
+                            <input type="range" id="speedSlider" min="0.5" max="1.5" step="0.05" value="0.7" oninput="updateSpeedFromSlider(this.value)" class="w-20 sm:w-28 accent-indigo-600 cursor-pointer">
+                            <button onclick="adjustSpeed(0.05)" title="Tăng tốc độ (0.05x)" class="w-6 h-6 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold flex items-center justify-center text-xs transition active:scale-95">
+                                <i class="fa-solid fa-plus text-[10px]"></i>
+                            </button>
+                            <span id="speedValueLabel" class="text-xs font-bold text-indigo-700 min-w-[42px] text-right font-mono">0.70x</span>
+                        </div>
+                    </div>
+
+                    <!-- Reset Button -->
+                    <button id="btnResetSpeech" onclick="resetSpeechSettings()" title="Đặt lại về mặc định" class="px-2.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold flex items-center gap-1 transition active:scale-95">
+                        <i class="fa-solid fa-rotate-left"></i> Đặt lại
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Table View -->
@@ -118,64 +156,10 @@
         </div>
     </footer>
 
+    <!-- IPA Dataset -->
+    <script src="js/ipa-data.js"></script>
+
     <script>
-        // Full dataset of 44 IPA sounds with exact classifications and guidelines
-        const ipaData = [
-            // Short Vowels (7)
-            { id: 1, ipa: "/ɪ/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Âm i ngắn, phát âm giống 'i' tiếng Việt nhưng ngắn hơn, bật nhanh. Môi hơi mở sang hai bên, lưỡi hạ thấp.", examples: "his /hɪz/, kid /kɪd/", audioQuery: "his kid" },
-            { id: 2, ipa: "/e/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Tương tự âm 'e' tiếng Việt nhưng phát âm ngắn hơn. Môi mở rộng sang hai bên rộng hơn âm /ɪ/, lưỡi hạ thấp hơn /ɪ/.", examples: "bed /bed/, head /hed/", audioQuery: "bed head" },
-            { id: 3, ipa: "/æ/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Âm a bẹt, lai giữa âm 'a' và 'e', âm nén xuống. Miệng mở rộng, môi dưới hạ thấp xuống, lưỡi hạ rất thấp.", examples: "trap /træp/, bad /bæd/", audioQuery: "trap bad" },
-            { id: 4, ipa: "/ɒ/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Âm o ngắn, tương tự âm 'o' tiếng Việt nhưng phát âm ngắn hơn. Môi hơi tròn, lưỡi hạ thấp.", examples: "hot /hɒt/, box /bɒks/", audioQuery: "hot box" },
-            { id: 5, ipa: "/ʊ/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Âm u ngắn, khá giống âm 'ư' tiếng Việt. Không dùng môi mà đẩy hơi rất ngắn từ cổ họng. Môi hơi tròn, lưỡi hạ thấp.", examples: "good /ɡʊd/, put /pʊt/", audioQuery: "good put" },
-            { id: 6, ipa: "/ʌ/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Âm lai giữa âm 'ă' và âm 'ơ' tiếng Việt (thiên về 'ă' hơn). Phát âm bật hơi ra. Miệng thu hẹp lại, lưỡi hơi nâng lên cao.", examples: "come /kʌm/, love /lʌv/", audioQuery: "come love" },
-            { id: 7, ipa: "/ə/", type1: "Nguyên âm", type2: "Nguyên âm ngắn", guide: "Âm ơ ngắn (Schwa), phát âm như âm 'ơ' tiếng Việt nhưng ngắn và nhẹ hơn. Môi hơi mở rộng, lưỡi thả lỏng.", examples: "banana /bəˈnɑːnə/, doctor /ˈdɒktə(r)/", audioQuery: "banana doctor" },
-
-            // Long Vowels (5)
-            { id: 8, ipa: "/iː/", type1: "Nguyên âm", type2: "Nguyên âm dài", guide: "Âm i dài, kéo dài âm 'i', âm phát từ trong khoang miệng chứ không thổi hơi ra. Môi mở rộng hai bên như đang mỉm cười, lưỡi nâng cao lên.", examples: "sea /siː/, green /ɡriːn/", audioQuery: "sea green" },
-            { id: 9, ipa: "/ɑː/", type1: "Nguyên âm", type2: "Nguyên âm dài", guide: "Âm 'a' đọc kéo dài, âm phát ra từ khoang miệng. Môi mở rộng, lưỡi hạ thấp.", examples: "start /stɑːt/, father /ˈfɑːðə(r)/", audioQuery: "start father" },
-            { id: 10, ipa: "/ɔː/", type1: "Nguyên âm", type2: "Nguyên âm dài", guide: "Phát âm như âm 'o' tiếng Việt nhưng rồi cong lưỡi lên, không phát âm từ khoang miệng. Tròn môi, lưỡi cong lên chạm vòm miệng khi kết thúc.", examples: "ball /bɔːl/, law /lɔː/", audioQuery: "ball law" },
-            { id: 11, ipa: "/uː/", type1: "Nguyên âm", type2: "Nguyên âm dài", guide: "Âm u dài, âm phát ra từ khoang miệng nhưng không thổi hơi ra, kéo dài âm u ngắn. Môi tròn, lưỡi nâng cao lên.", examples: "goose /ɡuːs/, school /skuːl/", audioQuery: "goose school" },
-            { id: 12, ipa: "/ɜː/", type1: "Nguyên âm", type2: "Nguyên âm dài", guide: "Âm ơ dài cong lưỡi. Phát âm /ə/ rồi cong lưỡi lên, âm phát từ trong khoang miệng. Môi hơi mở rộng, lưỡi chạm vòm miệng khi kết thúc.", examples: "burn /bɜːn/, birthday /ˈbɜːθdeɪ/", audioQuery: "burn birthday" },
-
-            // Diphthongs (8)
-            { id: 13, ipa: "/ɪə/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Nguyên âm đôi chuyển từ âm /ɪ/ rồi dần sang âm /ə/. Môi mở rộng dần nhưng không rộng quá. Lưỡi đẩy dần ra về phía trước.", examples: "near /nɪə(r)/, here /hɪə(r)/", audioQuery: "near here" },
-            { id: 14, ipa: "/eə/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Phát âm bằng cách đọc âm /e/ rồi chuyển dần sang âm /ə/. Môi hơi thu hẹp. Lưỡi thụt dần về phía sau.", examples: "hair /heə(r)/, there /ðeə(r)/", audioQuery: "hair there" },
-            { id: 15, ipa: "/eɪ/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Phát âm bằng cách đọc âm /e/ rồi chuyển dần sang âm /ɪ/. Môi dẹt dần sang hai bên. Lưỡi hướng dần lên trên.", examples: "face /feɪs/, day /deɪ/", audioQuery: "face day" },
-            { id: 16, ipa: "/ɔɪ/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Phát âm bằng cách đọc âm /ɔː/ rồi chuyển dần sang âm /ɪ/. Môi dẹt dần sang hai bên. Lưỡi nâng lên và đẩy dần về phía trước.", examples: "choice /tʃɔɪs/, boy /bɔɪ/", audioQuery: "choice boy" },
-            { id: 17, ipa: "/aɪ/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Phát âm bằng cách đọc âm /ɑː/ rồi chuyển dần sang âm /ɪ/. Môi dẹt dần sang hai bên. Lưỡi nâng lên và hơi đẩy dần về trước.", examples: "nice /naɪs/, try /traɪ/", audioQuery: "nice try" },
-            { id: 18, ipa: "/əʊ/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Phát âm bằng cách đọc âm /ə/ rồi chuyển dần sang âm /ʊ/. Môi từ hơi mở đến hơi tròn. Lưỡi lùi dần về phía sau.", examples: "goat /ɡəʊt/, show /ʃəʊ/", audioQuery: "goat show" },
-            { id: 19, ipa: "/aʊ/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Phát âm bằng cách đọc âm /ɑː/ rồi chuyển dần sang âm /ʊ/. Môi tròn dần. Lưỡi hơi thụt về phía sau.", examples: "mouth /maʊθ/, cow /kaʊ/", audioQuery: "mouth cow" },
-            { id: 20, ipa: "/ʊə/", type1: "Nguyên âm", type2: "Nguyên âm đôi", guide: "Chuyển từ âm /ʊ/ sang âm /ə/. Bắt đầu môi mở khá tròn, hơi bè, mặt lưỡi hướng lên ngạc trên. Sau đó miệng hơi mở, đưa lưỡi lùi về giữa.", examples: "sure /ʃʊə(r)/, tour /tʊə(r)/", audioQuery: "sure tour" },
-
-            // Unvoiced Consonants (9)
-            { id: 21, ipa: "/p/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Đọc gần giống âm P tiếng Việt, hai môi chặn luồng không khí trong miệng sau đó bật ra. Không rung dây thanh quản.", examples: "pen /pen/, copy /ˈkɒpi/", audioQuery: "pen copy" },
-            { id: 22, ipa: "/t/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Giống âm T tiếng Việt nhưng bật hơi mạnh hơn. Đặt đầu lưỡi dưới nướu, khi bật luồng khí ra lưỡi chạm răng cửa dưới. Không rung thanh quản.", examples: "tea /tiː/, tight /taɪt/", audioQuery: "tea tight" },
-            { id: 23, ipa: "/k/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Giống âm K tiếng Việt nhưng bật hơi mạnh bằng cách nâng phần sau lưỡi chạm ngạc mềm, hạ thấp khi khí bật ra. Không rung dây thanh.", examples: "key /kiː/, school /skuːl/", audioQuery: "key school" },
-            { id: 24, ipa: "/f/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Tương tự âm PH tiếng Việt. Khi phát âm, hàm trên chạm nhẹ vào môi dưới, đẩy không khí thoát ra ngoài.", examples: "fat /fæt/, coffee /ˈkɒfi/", audioQuery: "fat coffee" },
-            { id: 25, ipa: "/θ/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Đặt đầu lưỡi ở giữa hai hàm răng, để luồng khí thoát ra giữa lưỡi và 2 hàm răng. Thanh quản không rung.", examples: "thin /θɪn/, path /pɑːθ/", audioQuery: "thin path" },
-            { id: 26, ipa: "/s/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Lưỡi đặt nhẹ lên hàm trên, ngạc mềm nâng, luồng khí thoát từ giữa mặt lưỡi và lợi. Không rung thanh quản.", examples: "soon /suːn/, sister /ˈsɪstə(r)/", audioQuery: "soon sister" },
-            { id: 27, ipa: "/ʃ/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Môi chu ra hướng về phía trước, tròn môi. Mặt lưỡi chạm lợi hàm trên và nâng phần phía trước của lưỡi lên.", examples: "ship /ʃɪp/, sure /ʃɔː(r)/", audioQuery: "ship sure" },
-            { id: 28, ipa: "/tʃ/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Tương tự âm CH. Môi hơi tròn chu ra trước. Khí thoát ra thì lưỡi thẳng chạm hàm dưới, không rung thanh quản.", examples: "church /tʃɜːtʃ/, match /mætʃ/", audioQuery: "church match" },
-            { id: 29, ipa: "/h/", type1: "Phụ âm", type2: "Phụ âm vô thanh", guide: "Đọc như âm H tiếng Việt, môi hé nửa, lưỡi hạ thấp để khí thoát ra tự do. Thanh quản không rung.", examples: "hot /hɒt/, behind /bɪˈhaɪnd/", audioQuery: "hot behind" },
-
-            // Voiced Consonants (15)
-            { id: 30, ipa: "/b/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Đọc tương tự âm B tiếng Việt. Hai môi chặn không khí từ trong miệng sau đó bật ra. Thanh quản rung nhẹ.", examples: "back /bæk/, job /dʒɒb/", audioQuery: "back job" },
-            { id: 31, ipa: "/d/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Giống âm D tiếng Việt, bật hơi mạnh. Đặt đầu lưỡi dưới nướu, khi khí bật ra đầu lưỡi chạm răng cửa dưới. Thanh quản rung.", examples: "day /deɪ/, ladder /ˈlædə(r)/", audioQuery: "day ladder" },
-            { id: 32, ipa: "/g/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Giống âm G tiếng Việt. Nâng phần sau của lưỡi chạm ngạc mềm, hạ thấp khi luồng khí bật ra sao cho rung dây thanh.", examples: "get /ɡet/, ghost /ɡəʊst/", audioQuery: "get ghost" },
-            { id: 33, ipa: "/v/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Đọc như âm V tiếng Việt. Khi phát âm, hàm trên chạm nhẹ vào môi dưới, đẩy hơi làm rung thanh quản.", examples: "view /vjuː/, move /muːv/", audioQuery: "view move" },
-            { id: 34, ipa: "/ð/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Đặt đầu lưỡi ở giữa hai hàm răng, để luồng khí thoát ra giữa lưỡi và 2 hàm răng. Thanh quản rung.", examples: "this /ðɪs/, other /ˈʌðə(r)/", audioQuery: "this other" },
-            { id: 35, ipa: "/z/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Lưỡi đặt nhẹ lên hàm trên, ngạc mềm nâng, luồng khí thoát từ giữa mặt lưỡi và lợi làm rung thanh quản.", examples: "zero /ˈzɪərəʊ/, buzz /bʌz/", audioQuery: "zero buzz" },
-            { id: 36, ipa: "/ʒ/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Môi chu ra hướng về phía trước, tròn môi. Mặt lưỡi chạm lợi hàm trên, nâng phần trước lưỡi và rung thanh quản.", examples: "pleasure /ˈpleʒə(r)/, vision /ˈvɪʒn/", audioQuery: "pleasure vision" },
-            { id: 37, ipa: "/dʒ/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Phát âm giống /tʃ/ nhưng có rung dây thanh quản. Môi hơi tròn chu về trước, lưỡi chạm hàm dưới.", examples: "age /eɪdʒ/, gym /dʒɪm/", audioQuery: "age gym" },
-            { id: 38, ipa: "/m/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Âm mũi, đọc giống âm M tiếng Việt, hai môi ngậm lại, luồng khí thoát ra hoàn toàn bằng mũi.", examples: "money /ˈmʌn.i/, mean /miːn/", audioQuery: "money mean" },
-            { id: 39, ipa: "/n/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Âm mũi, đọc như âm N tiếng Việt. Môi hé, đầu lưỡi chạm lợi hàm trên, chặn khí phát ra từ mũi.", examples: "nice /naɪs/, sun /sʌn/", audioQuery: "nice sun" },
-            { id: 40, ipa: "/ŋ/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Âm mũi, chặn khí ở lưỡi, môi hé, phần sau của lưỡi nâng lên chạm ngạc mềm, khí phát qua mũi, thanh quản rung.", examples: "ring /rɪŋ/, long /lɒŋ/", audioQuery: "ring long" },
-            { id: 41, ipa: "/l/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Cong lưỡi từ từ chạm răng hàm trên, thanh quản rung, môi mở rộng hoàn toàn, đầu lưỡi cong đặt vào môi hàm trên.", examples: "light /laɪt/, feel /fiːl/", audioQuery: "light feel" },
-            { id: 42, ipa: "/r/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Khác âm R tiếng Việt. Cong lưỡi vào trong, môi tròn hơi chu ra. Khi khí thoát ra thì lưỡi thả lỏng, môi mở rộng.", examples: "right /raɪt/, sorry /ˈsɒri/", audioQuery: "right sorry" },
-            { id: 43, ipa: "/w/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Môi tròn, chu về phía trước, lưỡi thả lỏng. Khi luồng khí phát ra thì môi mở rộng, lưỡi vẫn thả lỏng.", examples: "wet /wet/, win /wɪn/", audioQuery: "wet win" },
-            { id: 44, ipa: "/j/", type1: "Phụ âm", type2: "Phụ âm hữu thanh", guide: "Nâng phần trước lưỡi gần ngạc cứng, đẩy khí thoát ra làm rung dây thanh quản. Môi hơi mở rộng khi khí phát ra.", examples: "yes /jes/, use /juːz/", audioQuery: "yes use" }
-        ];
-
         let currentFilter = 'all';
         let viewMode = 'table';
 
@@ -217,17 +201,19 @@
                     <td class="p-4 align-top">${getType1Badge(item.type1)}</td>
                     <td class="p-4 align-top">${getType2Badge(item.type2)}</td>
                     <td class="p-4 align-top text-slate-700 leading-relaxed">${item.guide}</td>
-                    <td class="p-4 align-top font-medium text-slate-800 leading-relaxed">${item.examples}</td>
+                    <td class="p-4 align-top font-medium text-slate-800 leading-relaxed">
+                        <div>${item.examples}</div>
+                        <button onclick="speakExample('${item.audioQuery}')" title="Nghe đọc ví dụ mẫu bằng AI" 
+                                class="mt-1.5 inline-flex items-center gap-1 text-[11px] text-indigo-600 hover:text-indigo-800 hover:underline font-medium">
+                            <i class="fa-solid fa-volume-low text-indigo-500"></i> Nghe đọc từ ví dụ
+                        </button>
+                    </td>
                     <td class="p-4 align-top text-center">
-                        <div class="flex flex-col items-center gap-1.5">
-                            <button onclick="speakText('${item.audioQuery}')" title="Phát âm từ mẫu" 
+                        <div class="flex flex-col items-center justify-center">
+                            <button onclick="playIpaAudio('${item.audioUrl}', '${item.remoteAudioUrl}')" title="Nghe âm IPA mẫu (MP3)" 
                                     class="w-10 h-10 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shadow-sm transition transform active:scale-95">
                                 <i class="fa-solid fa-volume-high text-sm"></i>
                             </button>
-                            <a href="https://youglish.com/pronounce/${encodeURIComponent(item.examples.split(' ')[0])}/english" target="_blank" 
-                               class="text-[11px] text-indigo-600 hover:text-indigo-800 hover:underline flex items-center gap-1 font-medium mt-1">
-                                Tra từ điển <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                            </a>
                         </div>
                     </td>
                 `;
@@ -254,30 +240,173 @@
                             </div>
                         </div>
                         <p class="text-xs text-slate-600 mb-3 leading-relaxed">${item.guide}</p>
-                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-xs font-medium text-slate-800 mb-4">
-                            <i class="fa-solid fa-bookmark text-indigo-500 mr-1.5"></i> ${item.examples}
+                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-xs font-medium text-slate-800 mb-4 flex justify-between items-center">
+                            <div><i class="fa-solid fa-bookmark text-indigo-500 mr-1.5"></i> ${item.examples}</div>
+                            <button onclick="speakExample('${item.audioQuery}')" title="Nghe đọc ví dụ mẫu bằng AI" class="text-indigo-600 hover:text-indigo-800 px-2 py-1 rounded hover:bg-indigo-100/70 transition flex items-center gap-1 text-[11px] font-semibold shrink-0">
+                                <i class="fa-solid fa-volume-low"></i> Từ mẫu
+                            </button>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center pt-3 border-t border-slate-100">
-                        <button onclick="speakText('${item.audioQuery}')" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
-                            <i class="fa-solid fa-volume-high"></i> Nghe âm mẫu
+                    <div class="pt-3 border-t border-slate-100">
+                        <button onclick="playIpaAudio('${item.audioUrl}', '${item.remoteAudioUrl}')" class="w-full justify-center px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition transform active:scale-95">
+                            <i class="fa-solid fa-volume-high"></i> Nghe âm IPA
                         </button>
-                        <a href="https://youglish.com/pronounce/${encodeURIComponent(item.examples.split(' ')[0])}/english" target="_blank" class="text-xs text-indigo-600 hover:underline font-medium">
-                            Tra cứu <i class="fa-solid fa-external-link text-[10px]"></i>
-                        </a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // Web Speech API for Pronunciation Audio
-        function speakText(text) {
+        let currentAudio = null;
+
+        // Play IPA Audio: Local MP3 -> Remote Online MP3 ONLY (No AI fallback for IPA sound)
+        function playIpaAudio(localUrl, remoteUrl) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Stop ongoing audio
-                const utterance = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.cancel();
+            }
+
+            if (localUrl) {
+                currentAudio = new Audio(localUrl);
+                currentAudio.play().catch(err => {
+                    console.warn('Không thể phát file MP3 local, thử nạp URL online:', err);
+                    tryRemote();
+                });
+            } else {
+                tryRemote();
+            }
+
+            function tryRemote() {
+                if (remoteUrl) {
+                    currentAudio = new Audio(remoteUrl);
+                    currentAudio.play().catch(err => {
+                        console.warn('Không thể phát URL online:', err);
+                        alert('Không thể phát file âm thanh mẫu IPA này. Vui lòng kiểm tra kết nối internet hoặc thư mục audio local.');
+                    });
+                } else {
+                    alert('Không tìm thấy file âm thanh mẫu IPA.');
+                }
+            }
+        }
+
+        // Voice & Speed Settings Management with localStorage
+        let availableVoices = [];
+
+        function populateVoices() {
+            if (!('speechSynthesis' in window)) return;
+            const voices = window.speechSynthesis.getVoices();
+            // Filter English voices for clarity
+            availableVoices = voices.filter(v => v.lang.startsWith('en'));
+            
+            const voiceSelect = document.getElementById('voiceSelect');
+            if (!voiceSelect) return;
+            
+            const currentValue = voiceSelect.value;
+            voiceSelect.innerHTML = '<option value="default">Mặc định hệ thống</option>';
+            
+            availableVoices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                voiceSelect.appendChild(option);
+            });
+
+            loadSpeechSettings();
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        function updateSpeedFromSlider(val) {
+            const num = parseFloat(val);
+            const speedLabel = document.getElementById('speedValueLabel');
+            if (speedLabel) {
+                speedLabel.textContent = num.toFixed(2) + 'x';
+            }
+            saveSpeechSettings();
+        }
+
+        function adjustSpeed(delta) {
+            const slider = document.getElementById('speedSlider');
+            if (!slider) return;
+            let current = parseFloat(slider.value) || 0.7;
+            let nextVal = Math.min(1.5, Math.max(0.5, current + delta));
+            slider.value = nextVal.toFixed(2);
+            updateSpeedFromSlider(slider.value);
+        }
+
+        function loadSpeechSettings() {
+            const savedVoice = localStorage.getItem('ipa_speech_voice');
+            const savedSpeed = localStorage.getItem('ipa_speech_speed');
+            
+            const voiceSelect = document.getElementById('voiceSelect');
+            const speedSlider = document.getElementById('speedSlider');
+            const speedLabel = document.getElementById('speedValueLabel');
+
+            if (savedVoice && voiceSelect) {
+                voiceSelect.value = savedVoice;
+            }
+            if (savedSpeed && speedSlider) {
+                speedSlider.value = savedSpeed;
+                if (speedLabel) {
+                    speedLabel.textContent = parseFloat(savedSpeed).toFixed(2) + 'x';
+                }
+            }
+        }
+
+        function saveSpeechSettings() {
+            const voiceSelect = document.getElementById('voiceSelect');
+            const speedSlider = document.getElementById('speedSlider');
+            
+            if (voiceSelect) {
+                localStorage.setItem('ipa_speech_voice', voiceSelect.value);
+            }
+            if (speedSlider) {
+                localStorage.setItem('ipa_speech_speed', speedSlider.value);
+            }
+        }
+
+        function resetSpeechSettings() {
+            localStorage.removeItem('ipa_speech_voice');
+            localStorage.removeItem('ipa_speech_speed');
+            
+            const voiceSelect = document.getElementById('voiceSelect');
+            const speedSlider = document.getElementById('speedSlider');
+            const speedLabel = document.getElementById('speedValueLabel');
+
+            if (voiceSelect) voiceSelect.value = 'default';
+            if (speedSlider) {
+                speedSlider.value = '0.7';
+                if (speedLabel) speedLabel.textContent = '0.70x';
+            }
+        }
+
+        // Speak Example Words using Web Speech API AI with user settings
+        function speakExample(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                // Replace spaces with commas to introduce a clear pause between example words
+                const textWithPauses = text.split(' ').join(', ');
+                const utterance = new SpeechSynthesisUtterance(textWithPauses);
                 utterance.lang = 'en-US';
-                utterance.rate = 0.85; // Slightly slower for clarity
+
+                // Apply user selected speed from slider
+                const speedSlider = document.getElementById('speedSlider');
+                utterance.rate = speedSlider ? parseFloat(speedSlider.value) : 0.70;
+
+                // Apply user selected voice
+                const voiceSelect = document.getElementById('voiceSelect');
+                if (voiceSelect && voiceSelect.value !== 'default') {
+                    const selectedVoice = availableVoices.find(v => v.name === voiceSelect.value);
+                    if (selectedVoice) {
+                        utterance.voice = selectedVoice;
+                    }
+                }
+
                 window.speechSynthesis.speak(utterance);
             } else {
                 alert('Trình duyệt của bạn không hỗ trợ tính năng phát âm trực tiếp.');
@@ -345,6 +474,7 @@
 
         // Initial render
         document.addEventListener('DOMContentLoaded', () => {
+            populateVoices();
             filterData();
         });
     </script>
