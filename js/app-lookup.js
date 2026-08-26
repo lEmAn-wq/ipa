@@ -1,4 +1,4 @@
-/* IPA Lookup Page Logic (ipa.html) */
+/* IPA Lookup Page Logic (index.html) */
 let currentFilter = 'all';
 let currentView = 'table';
 let searchQuery = '';
@@ -106,7 +106,7 @@ function filterData() {
 
     if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase().trim();
-        filtered = filtered.filter(item => 
+        filtered = filtered.filter(item =>
             item.ipa.toLowerCase().includes(query) ||
             item.guide.toLowerCase().includes(query) ||
             item.examples.toLowerCase().includes(query) ||
